@@ -1,9 +1,12 @@
-import { Button } from "@/components/ui/button"
+import AppRouter from "@/routes";
+import { BrowserRouter } from "react-router-dom";
+import { Toaster } from "./components/ui/toaster";
 
-export default function Home() {
+export default function App() {
   return (
-    <div>
-      <Button>Click me</Button>
-    </div>
-  )
+    <BrowserRouter>
+      <AppRouter />
+      <Toaster />
+    </BrowserRouter>
+  );
 }
