@@ -30,7 +30,7 @@ const HospitalsTable: React.FC = () => {
     const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
 
-    const handleReject = () => {
+    const handleAddHospital = () => {
         setOpenDialog(true);
     };
     const handleViewProfile = async (hospitalId: string) => {
@@ -137,7 +137,7 @@ const HospitalsTable: React.FC = () => {
                                 <Search className="text-white" />
                             </div>
                         </div>
-                        <Button className=" bg-[#013DC0] text-white" variant="primary" onClick={handleReject}>Add Hospital</Button>
+                        <Button className=" bg-[#013DC0] text-white" variant="primary" onClick={handleAddHospital}>Add Hospital</Button>
                     </div>
                 </div>
                 {/* Hospital Table */}

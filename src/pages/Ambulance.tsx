@@ -1,9 +1,9 @@
-import React from 'react'
+import Ambulance from "@/components/internal/Ambulance/Ambulance"
 
-const Ambulance = () => {
+const AmbulancePage = () => {
   return (
-    <div>Ambulance</div>
+    <Ambulance />
   )
 }
 
-export default Ambulance
+export default AmbulancePage

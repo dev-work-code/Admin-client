@@ -28,9 +28,14 @@ import api from "@/utils/api";
 import SkeletonLoader from "@/pages/common/SkeletonLoader";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import AddDoctorDialog from "./AddDoctor/PorfileScreen/profileScreen";
 
 const DoctorsTable: React.FC = () => {
     const { data, isLoading, error } = useDoctors();
+    const [openDialog, setOpenDialog] = useState(false);
+    const handleAddDotor = () => {
+        setOpenDialog(true);
+    };
     const navigate = useNavigate();
     const handleViewProfile = async (doctorId: string) => {
         try {
@@ -138,7 +143,7 @@ const DoctorsTable: React.FC = () => {
                                 <Search className="text-white" />
                             </div>
                         </div>
-                        <Button className="bg-[#013DC0] text-white" variant="primary">Add Doctor</Button>
+                        <Button className="bg-[#013DC0] text-white" variant="primary" onClick={handleAddDotor}>Add Doctor</Button>
                     </div>
                 </div>
                 {/* Doctor Table */}
@@ -224,6 +229,9 @@ const DoctorsTable: React.FC = () => {
                     </Pagination>
                 </div>
             </CardContent>
+            <AddDoctorDialog
+                open={openDialog}
+                onOpenChange={setOpenDialog} />
         </Card>
     );
 };

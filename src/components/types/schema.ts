@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 export const hospitalSchema = z.object({
     hospitalName: z.string().nonempty("Hospital Name is required"),
     hospitalLocation: z.string().nonempty("Hospital Location is required"),
@@ -16,4 +17,6 @@ export const hospitalSchema = z.object({
         message: "Images are required",
     }),
     address: z.string().nonempty("Address is required"),
+    latitude: z.string().nonempty("Latitude is required"),
+    longitude: z.string().nonempty("Longitude is required"),
 });

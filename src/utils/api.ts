@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosRequestHeaders, InternalAxiosRequestConfig } fr
 import { getAuthCookies } from "./cookies";
 
 const api = axios.create({
-  baseURL: "https://livapp.elitceler.com/api/v1",
+  baseURL: "http://ec2-65-0-97-119.ap-south-1.compute.amazonaws.com:4005/api/v1",
   headers: {
     "Content-Type": "application/json",
   },

@@ -1,8 +1,8 @@
-import React from 'react'
+import Faclities from '@/components/internal/Faclities/Faclities'
 
 const Maps = () => {
   return (
-    <div>Maps</div>
+    <Faclities/>
   )
 }
 
