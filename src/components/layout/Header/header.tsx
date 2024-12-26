@@ -10,7 +10,7 @@ const Header = () => {
       </div>
       <div className="flex items-center space-x-2">
         <Link to="/login">
-          <Button variant="primary" className="px-4 py-2 text-white rounded-full">Login</Button>
+          <Button variant="primary" className="px-4 py-2 text-black rounded-full">Login</Button>
         </Link>
         <span className="text-gray-500">/</span>
         <Link to="/register">

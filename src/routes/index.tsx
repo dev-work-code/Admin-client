@@ -1,10 +1,15 @@
+import RegisterScreen from "@/components/internal/AuthComponent/Register/RegisterScreen";
 import HomeLayout from "@/components/layout/HomeLayout";
 import Ambulance from "@/pages/Ambulance";
 import Dashboard from "@/pages/dashboard";
+import DoctorsPage from "@/pages/Doctor";
 import Doctor from "@/pages/Doctor";
+import DoctorProfilePage from "@/pages/DoctorProfile";
 import Home from "@/pages/home";
+import HospitalProfil from "@/pages/HospitalProfile";
 import Hospitals from "@/pages/Hospitals";
 import LiveCases from "@/pages/LiveCases";
+import Login from "@/pages/Login";
 import Maps from "@/pages/Maps";
 import NotFound from "@/pages/notFound";
 import Profile from "@/pages/Profile";
@@ -60,7 +65,18 @@ export default function AppRouter() {
           path: "/hospitals",
           element: <Hospitals />,
         },
-
+        {
+          path: "/hospital/:hospitalId",
+          element: <HospitalProfil />,
+        },
+        {
+          path: "/doctor/:doctorId",
+          element: <DoctorProfilePage />,
+        },
+        {
+          path: "/doctor",
+          element: <DoctorsPage />,
+        },
       ],
     },
   ];
@@ -70,18 +86,14 @@ export default function AppRouter() {
       path: "/404",
       element: <NotFound />,
     },
-    // {
-    //   path: "/register",
-    //   element: <RegisterScreen />,
-    // },
-    // {
-    //   path: "/login",
-    //   element: <LoginScreen />,
-    // },
-    // {
-    //   path: "/login/otp",
-    //   element: <OTPComponent />,
-    // },
+    {
+      path: "/register",
+      element: <RegisterScreen />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
     {
       path: "*",
       element: <Navigate to="/404" replace />,

@@ -1,9 +1,9 @@
-import React from 'react'
+import Doctors from '@/components/internal/Doctor/Doctor'
 
-const Doctor = () => {
+const DoctorsPage = () => {
   return (
-    <div>Doctor</div>
+    <Doctors/>
   )
 }
 
-export default Doctor
+export default DoctorsPage

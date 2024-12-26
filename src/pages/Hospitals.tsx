@@ -1,8 +1,7 @@
-import React from 'react'
-
+import HospitalsComponent from '@/components/internal/Hospitals/Hospitals'
 const Hospitals = () => {
   return (
-    <div>Hospitals</div>
+    <HospitalsComponent />
   )
 }
 
