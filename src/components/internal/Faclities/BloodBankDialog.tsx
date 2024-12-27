@@ -42,6 +42,8 @@ const BloodBankDialog: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
 
   // Handle form submission
   const onSubmit = async (data: FormData) => {
+    console.log(data);
+    
     setLoading(true); // Set loading to true when submitting
     try {
       // Prepare the form data

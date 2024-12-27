@@ -1,4 +1,6 @@
 import RegisterScreen from "@/components/internal/AuthComponent/Register/RegisterScreen";
+import DoctorDetailsPage from "@/components/internal/Doctor/DoctorDetailsPage";
+import MapPage from "@/components/internal/Faclities/MapPage";
 import HomeLayout from "@/components/layout/HomeLayout";
 import Ambulance from "@/pages/Ambulance";
 import Dashboard from "@/pages/dashboard";
@@ -76,6 +78,14 @@ export default function AppRouter() {
         {
           path: "/doctor",
           element: <DoctorsPage />,
+        },
+        {
+          path: "/doctor-details",
+          element: <DoctorDetailsPage />,
+        },
+        {
+          path: "/mappage",
+          element: <MapPage />,
         },
       ],
     },

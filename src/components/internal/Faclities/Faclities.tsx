@@ -10,7 +10,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useNavigate } from "react-router-dom";
 import SkeletonLoader from "@/pages/common/SkeletonLoader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -21,7 +20,6 @@ import PharmacyDialog from "./PharmacyDialog";
 
 const FacilitiesTable: React.FC = () => {
     const { data, isLoading, error } = useFacilities();
-    const navigate = useNavigate();
 
     const [filter, setFilter] = useState<"all" | "bloodBanks" | "diagnosticCenters" | "pharmacies">("all");
     const [searchTerm, setSearchTerm] = useState("");
@@ -160,15 +158,18 @@ const FacilitiesTable: React.FC = () => {
                                                     : "Pharmacy"}
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <DropdownMenu>
+                                            <DropdownMenu >
                                                 <DropdownMenuTrigger>
                                                     <EllipsisVertical className="cursor-pointer" />
                                                 </DropdownMenuTrigger>
-                                                <DropdownMenuContent>
+                                                <DropdownMenuContent >
                                                     <DropdownMenuItem
-                                                        onClick={() => navigate(`/facility/${facility.id}`)}
                                                     >
-                                                        View Details
+                                                        View Maps
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                    >
+                                                        Remove
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>

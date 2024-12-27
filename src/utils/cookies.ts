@@ -1,3 +1,4 @@
+// @/utils/cookies.ts
 import Cookies from "js-cookie";
 
 // Define the name and options for the authentication cookie

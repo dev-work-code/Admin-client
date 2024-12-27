@@ -1,13 +1,33 @@
 import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import api from "@/utils/api"; // Importing the api instance
 
 const HospitalProfile = () => {
-    // Get the hospital data passed via state
     const { state } = useLocation();
     const hospital = state?.data;
 
-    // Ensure hospital data is available
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleStatusUpdate = async (status: "APPROVED" | "REJECTED") => {
+        setIsLoading(true);
+        try {
+            const response = await api.patch(`/admin/hospitalStatus/${hospital.hospitalId}`, { status });
+
+            if (response.status === 200) {
+                alert(`Hospital status updated to ${status}`);
+            } else {
+                throw new Error("Unexpected response status");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("An error occurred while updating the status.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     if (!hospital) {
         return <div>No hospital data found.</div>;
     }
@@ -94,6 +114,23 @@ const HospitalProfile = () => {
                         {hospital.hospitalIncorporatingCertificate}
                     </Card>
                 </div>
+            </div>
+
+            <div className="mt-6 flex space-x-4">
+                <button
+                    onClick={() => handleStatusUpdate("APPROVED")}
+                    disabled={isLoading}
+                    className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                >
+                    {isLoading ? "Processing..." : "Accept"}
+                </button>
+                <button
+                    onClick={() => handleStatusUpdate("REJECTED")}
+                    disabled={isLoading}
+                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                >
+                    {isLoading ? "Processing..." : "Reject"}
+                </button>
             </div>
         </div>
     );

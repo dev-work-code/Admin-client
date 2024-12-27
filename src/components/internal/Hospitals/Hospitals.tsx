@@ -45,6 +45,7 @@ const HospitalsTable: React.FC = () => {
             console.error("Error fetching hospital profile:", error);
             alert("Failed to fetch hospital details.");
         }
+        
     };
 
     // State for filtering, search, and pagination

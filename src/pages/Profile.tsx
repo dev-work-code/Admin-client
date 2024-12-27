@@ -1,8 +1,7 @@
-import React from 'react'
-
+import AdminProfile from '@/components/internal/Profile/AdminProfile'
 const Profile = () => {
   return (
-    <div>Profile</div>
+    <AdminProfile/>
   )
 }
 

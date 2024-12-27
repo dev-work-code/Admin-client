@@ -2,11 +2,8 @@ import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
-  SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavMain } from "./NavMain";
-import { NavUser } from "./NavUser";
 import Logo from "@/assets/Liv PrivateLimited Transprent 1.svg";
 import dashBoardIcon from "@/assets/ic_Dashboard.svg";
 import RoleIcon from "@/assets/Role.svg";
@@ -82,10 +79,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
-      <SidebarRail />
+      {/* <SidebarRail /> */}
     </Sidebar>
   );
 }
