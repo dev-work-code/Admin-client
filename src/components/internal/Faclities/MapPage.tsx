@@ -8,7 +8,7 @@ const FacilityMap: React.FC = () => {
   });
 
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const { state } = location;
   const facilityLocation = state?.location;
@@ -19,12 +19,12 @@ const FacilityMap: React.FC = () => {
 
   return (
     <div className="h-screen w-screen">
-      <button
+      {/* <button
         onClick={() => navigate(-1)}
         className="bg-blue-500 text-white px-4 py-2 rounded absolute top-4 left-4 z-10"
       >
         Back
-      </button>
+      </button> */}
       {isLoaded ? (
         <GoogleMap
           mapContainerStyle={{ width: '100%', height: '100%' }}
