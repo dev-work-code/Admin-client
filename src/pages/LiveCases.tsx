@@ -1,9 +1,9 @@
-import React from 'react'
+import LiveCases from '@/components/internal/LiveCases/LiveCases'
 
-const LiveCases = () => {
+const LiveCasesPage = () => {
   return (
-    <div>LiveCases</div>
+    <LiveCases />
   )
 }
 
-export default LiveCases
+export default LiveCasesPage

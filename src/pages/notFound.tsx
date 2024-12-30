@@ -1,5 +1,3 @@
-import React from 'react'
-
 const notFound = () => {
   return (
     <div>notFound</div>

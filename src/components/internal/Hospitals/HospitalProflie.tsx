@@ -3,6 +3,25 @@ import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 
 // Interfaces for type safety
+
+interface EMT {
+    emtId: string;
+    emtName: string;
+    emtMobileNumber: string;
+}
+
+interface Case {
+    emtCaseId: string;
+    emtId: string;
+    emt: EMT;
+    patientName: string;
+    patientAddress: string;
+    condition: string;
+    createdAt: string;
+    patientPhoneNumber?: string;
+    patientLatitude?: number;
+    patientLongitude?: number;
+}
 interface Patient {
     patientId: string;
     doctorId: string;
@@ -38,6 +57,10 @@ interface Hospital {
     hospitalPhoto: string;
     doctors?: Doctor[];
     departments?: Department[];
+    emtCases?: {
+        total: number;
+        cases: Case[];
+    };
 }
 
 const HospitalInfo: React.FC<{ hospital: Hospital }> = ({ hospital }) => (
@@ -63,6 +86,7 @@ const HospitalProfile: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>("overview");
     const [doctorSearchQuery, setDoctorSearchQuery] = useState<string>("");
     const [patientSearchQuery, setPatientSearchQuery] = useState<string>("");
+    const [liveCaseSearchQuery, setLiveCaseSearchQuery] = useState<string>("");
 
     if (!hospital) {
         return <div>No hospital data found.</div>;
@@ -78,6 +102,11 @@ const HospitalProfile: React.FC = () => {
         .filter((patient) =>
             patient.patientName.toLowerCase().includes(patientSearchQuery.toLowerCase())
         );
+
+    const filteredLiveCases = hospital.emtCases?.cases.filter((emtCase) =>
+        emtCase.patientName.toLowerCase().includes(liveCaseSearchQuery.toLowerCase())
+    );
+
 
     const renderContent = () => {
         switch (selectedCategory) {
@@ -177,6 +206,42 @@ const HospitalProfile: React.FC = () => {
                         ))}
                     </div>
                 );
+            case "LiveCases":
+                return (
+                    <div className="space-y-4">
+                        <h2 className="text-xl font-bold">Live Cases</h2>
+
+                        {/* Search Input for Live Cases */}
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={liveCaseSearchQuery}
+                                onChange={(e) => setLiveCaseSearchQuery(e.target.value)}
+                                placeholder="Search for live cases"
+                                className="p-2 border rounded-md w-full"
+                            />
+                        </div>
+
+                        {/* Live Case count */}
+                        <p><strong>Total Live Cases Available:</strong> {filteredLiveCases?.length || 0}</p>
+
+                        {/* Live Case List */}
+                        {filteredLiveCases?.length ? (
+                            filteredLiveCases.map((emtCase) => (
+                                <Card key={emtCase.emtCaseId} className="p-4 space-y-2">
+                                    <p><strong>Patient Name:</strong> {emtCase.patientName}</p>
+                                    <p><strong>Address:</strong> {emtCase.patientAddress}</p>
+                                    <p><strong>Condition:</strong> {emtCase.condition}</p>
+                                    <p><strong>Reported At:</strong> {new Date(emtCase.createdAt).toLocaleString()}</p>
+                                    <p><strong>EMT Name:</strong> {emtCase.emt.emtName}</p>
+                                    <p><strong>EMT Contact:</strong> {emtCase.emt.emtMobileNumber}</p>
+                                </Card>
+                            ))
+                        ) : (
+                            <p>No live cases available matching the search query.</p>
+                        )}
+                    </div>
+                );
             case "ownerDetails":
                 return (
                     <div className="space-y-4">
@@ -199,6 +264,7 @@ const HospitalProfile: React.FC = () => {
                         { key: "patients", label: "Patients" },
                         { key: "departments", label: "Departments" },
                         { key: "ownerDetails", label: "Owner Details" },
+                        { key: "LiveCases", label: "Live Cases" },
                     ].map(({ key, label }) => (
                         <button
                             key={key}

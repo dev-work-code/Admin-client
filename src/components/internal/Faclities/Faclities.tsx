@@ -17,9 +17,11 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import BloodBankDialog from "./BloodBankDialog";
 import DiagnosticCenterDialog from "./DiagnosticCenterDialog";
 import PharmacyDialog from "./PharmacyDialog";
+import { useNavigate } from "react-router-dom";
 
 const FacilitiesTable: React.FC = () => {
     const { data, isLoading, error } = useFacilities();
+    const navigate = useNavigate();
 
     const [filter, setFilter] = useState<"all" | "bloodBanks" | "diagnosticCenters" | "pharmacies">("all");
     const [searchTerm, setSearchTerm] = useState("");
@@ -164,6 +166,16 @@ const FacilitiesTable: React.FC = () => {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent >
                                                     <DropdownMenuItem
+                                                        onClick={() => {
+                                                            navigate('/mapspage', {
+                                                                state: {
+                                                                    location: {
+                                                                        lat: facility.latitude,
+                                                                        lng: facility.longitude,
+                                                                    },
+                                                                },
+                                                            });
+                                                        }}
                                                     >
                                                         View Maps
                                                     </DropdownMenuItem>
