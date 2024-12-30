@@ -1,9 +1,9 @@
-import React from 'react'
+import Roles from '@/components/internal/Roles/Roles'
 
-const Roles = () => {
+const RolesPage = () => {
   return (
-    <div>Roles</div>
+    <Roles />
   )
 }
 
-export default Roles
+export default RolesPage

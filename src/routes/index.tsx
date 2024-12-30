@@ -9,12 +9,15 @@ import Doctor from "@/pages/Doctor";
 import DoctorProfilePage from "@/pages/DoctorProfile";
 import Home from "@/pages/home";
 import HospitalProfil from "@/pages/HospitalProfile";
+import HospitalReject from "@/pages/HospitalReject";
 import Hospitals from "@/pages/Hospitals";
 import LiveCases from "@/pages/LiveCases";
 import Login from "@/pages/Login";
 import Maps from "@/pages/Maps";
 import NotFound from "@/pages/notFound";
 import Profile from "@/pages/Profile";
+import ProfileRolePage from "@/pages/ProfileRole";
+import ProfileRole from "@/pages/ProfileRole";
 import Roles from "@/pages/Roles";
 import { Suspense } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
@@ -72,6 +75,10 @@ export default function AppRouter() {
           element: <HospitalProfil />,
         },
         {
+          path: "/hospital-profile/:hospitalId",
+          element: <HospitalReject />,
+        },
+        {
           path: "/doctor/:doctorId",
           element: <DoctorProfilePage />,
         },
@@ -84,8 +91,16 @@ export default function AppRouter() {
           element: <DoctorDetailsPage />,
         },
         {
-          path: "/mappage",
+          path: "/mapspage",
           element: <MapPage />,
+        },
+        {
+          path: "/profile/:id",
+          element: <ProfileRole />,
+        },
+        {
+          path: "/add-role",
+          element: <ProfileRolePage />,
         },
       ],
     },

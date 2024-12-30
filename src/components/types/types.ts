@@ -39,3 +39,31 @@ export interface CreateProfileFormData {
     "Surgical gastroenterology",
     "Pulmonology",
   ];
+
+
+  // Define the Hospital interface
+ export interface Hospital {
+  hospitalId: string;
+  hospitalName: string;
+  hospitalLocation: string;
+  hospitalPhoneNumber: string;
+  hospitalPhoto: string;
+  hospitalWorkingHours: string;
+  hospitalDateOfRegistration: string;
+  hospitalDMHORegistration: string;
+  hospitalCompanyDetails: string;
+  hospitalCompanyPAN: string;
+  hospitalIncorporatingCertificate: string;
+  hospitalOwnerDetails: string;
+  hospitalServicesOffered: string;
+  hospitalSpecialistServices: string;
+  hospitalNumberOfBeds: number;
+  hospitalAreasOfInterest: string;
+  latitude: number;
+  longitude: number;
+  hospitalApprovalStatus: string;
+  hospitalAddedBy: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+}

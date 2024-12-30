@@ -33,19 +33,26 @@ const HospitalsTable: React.FC = () => {
     const handleAddHospital = () => {
         setOpenDialog(true);
     };
-    const handleViewProfile = async (hospitalId: string) => {
+    const handleViewProfile = async (hospitalId: string, approvalStatus: string) => {
         try {
+            // Fetch the hospital profile details
             const response = await api.get(`/admin/getHospitalbyID`, {
                 params: { hospitalId },
             });
 
-            // Navigate to the profile page with data
-            navigate(`/hospital/${hospitalId}`, { state: response.data });
+            // Add hospitalApprovalStatus to the query params or state
+            if (approvalStatus === "APPROVED") {
+                navigate(`/hospital/${hospitalId}?status=${approvalStatus}`, { state: response.data });
+            } else if (approvalStatus === "PENDING") {
+                navigate(`/hospital-profile/${hospitalId}?status=${approvalStatus}`, { state: response.data });
+            }
+            else if (approvalStatus === "REJECTED") {
+                navigate(`/hospital-profile/${hospitalId}?status=${approvalStatus}`, { state: response.data });
+            }
         } catch (error) {
             console.error("Error fetching hospital profile:", error);
             alert("Failed to fetch hospital details.");
         }
-        
     };
 
     // State for filtering, search, and pagination
@@ -170,7 +177,7 @@ const HospitalsTable: React.FC = () => {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent>
                                                     <DropdownMenuItem
-                                                        onClick={() => handleViewProfile(hospital.hospitalId)}
+                                                        onClick={() => handleViewProfile(hospital.hospitalId, hospital.hospitalApprovalStatus)}
                                                     >
                                                         View Profile
                                                     </DropdownMenuItem>
