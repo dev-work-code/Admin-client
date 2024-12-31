@@ -88,7 +88,7 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
     };
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
-            <AlertDialogContent className="max-w-5xl">
+            <AlertDialogContent className="max-w-5xl rounded-3xl">
                 <button
                     className="absolute top-4 right-4 bg-[#E9F4FF] rounded-full text-[#013DC0] p-2"
                     onClick={() => onOpenChange(false)}

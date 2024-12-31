@@ -1,6 +1,6 @@
 import React from 'react';
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 
 const FacilityMap: React.FC = () => {
   const { isLoaded } = useLoadScript({

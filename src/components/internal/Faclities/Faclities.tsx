@@ -151,7 +151,8 @@ const FacilitiesTable: React.FC = () => {
                                         <TableCell>
                                             {facility.bloodBankName || facility.diagnosticCenterName || facility.pharmacyName || "N/A"}
                                         </TableCell>
-                                        <TableCell>{facility.location || "N/A"}</TableCell>
+                                        <TableCell>{facility.
+                                            bloodBankLocation || "N/A"}</TableCell>
                                         <TableCell>
                                             {facility.bloodBankName
                                                 ? "Blood Bank"

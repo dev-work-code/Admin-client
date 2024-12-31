@@ -1,6 +1,7 @@
 import RegisterScreen from "@/components/internal/AuthComponent/Register/RegisterScreen";
 import DoctorDetailsPage from "@/components/internal/Doctor/DoctorDetailsPage";
 import MapPage from "@/components/internal/Faclities/MapPage";
+import LiveCaseProfile from "@/components/internal/LiveCases/LiveCasesProfile/LiveCaseProfile";
 import HomeLayout from "@/components/layout/HomeLayout";
 import Ambulance from "@/pages/Ambulance";
 import Dashboard from "@/pages/dashboard";
@@ -101,6 +102,10 @@ export default function AppRouter() {
         {
           path: "/add-role",
           element: <ProfileRolePage />,
+        },
+        {
+          path: "/live-case-profile",
+          element: <LiveCaseProfile />,
         },
       ],
     },

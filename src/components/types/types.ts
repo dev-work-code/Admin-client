@@ -67,3 +67,22 @@ export interface CreateProfileFormData {
   updatedAt: string;
   status: string;
 }
+
+
+
+export const departments = [
+    'Internal Medicine',
+    'Pediatrics',
+    'Dermatology',
+    'Cardiology',
+    'Neurology',
+    'Orthopaedics',
+    'Neurosurgery',
+    'General Surgery',
+    'Gastroenterology',
+    'Ophthalmology',
+    'ENT',
+    'Gynaecology',
+    'Surgical Gastroenterology',
+    'Pulmonology',
+];
