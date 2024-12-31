@@ -28,6 +28,7 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 const RolesTable: React.FC = () => {
     const { data, isLoading, isError } = useRoles();
@@ -85,7 +86,7 @@ const RolesTable: React.FC = () => {
                             placeholder="Search by role, name, or email"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full border px-4 py-2 rounded-full pr-12 bg-white"
+                            className="w-full border px-4 py-5 rounded-full pr-12 bg-white"
                         />
                         <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#003CBF] p-2 rounded-full">
                             <Search className="text-white" />
@@ -101,9 +102,9 @@ const RolesTable: React.FC = () => {
                                 <TableHead className="text-left">S.No.</TableHead>
                                 <TableHead className="text-left">Name</TableHead>
                                 <TableHead className="text-left">Email</TableHead>
-                                <TableHead className="text-left">Role</TableHead>
-                                <TableHead className="text-left">Phone Number</TableHead>
                                 <TableHead className="text-left">Gender</TableHead>
+                                <TableHead className="text-left">Phone Number</TableHead>
+                                <TableHead className="text-left">Role</TableHead>
                                 <TableHead className="text-left"></TableHead>
                             </TableRow>
                         </TableHeader>
@@ -114,9 +115,9 @@ const RolesTable: React.FC = () => {
                                         <TableCell>{startIndex + index + 1}.</TableCell>
                                         <TableCell>{role.name}</TableCell>
                                         <TableCell>{role.email || "N/A"}</TableCell>
-                                        <TableCell>{role.role}</TableCell>
                                         <TableCell>{role.phoneNumber}</TableCell>
                                         <TableCell>{role.gender}</TableCell>
+                                        <TableCell><Badge variant="nursing"> {role.role}</Badge></TableCell>
                                         <TableCell className="text-right">
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger>

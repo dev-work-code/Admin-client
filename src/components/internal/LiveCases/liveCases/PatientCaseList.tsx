@@ -3,7 +3,8 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { PatientCase } from '@/hooks/usePatientCases';
 import { MapPin, Phone } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import axios from '@/utils/api'; // Assuming you have an Axios instance setup
 
 interface PatientCaseListProps {
     patientCases: PatientCase[];
@@ -11,6 +12,21 @@ interface PatientCaseListProps {
 }
 
 const PatientCaseList = ({ patientCases, onOpenDialog }: PatientCaseListProps) => {
+    const navigate = useNavigate(); // Initialize navigate
+
+    // Function to handle API call and redirect
+    const handleViewDetails = async (caseId: string) => {
+        try {
+            const response = await axios.get(`/admin/get-case-details?caseId=${caseId}`);
+            const caseDetails = response.data?.data;
+            console.log('Case Details:', caseDetails); // Replace this with any pre-processing if needed
+            // Redirect to the live case profile page
+            navigate('/live-case-profile', { state: { caseDetails } });
+        } catch (error) {
+            console.error('Failed to fetch case details:', error);
+        }
+    };
+
     return (
         <div className="space-y-10">
             {patientCases.map((caseData) => (
@@ -84,7 +100,7 @@ const PatientCaseList = ({ patientCases, onOpenDialog }: PatientCaseListProps) =
                         <div className="h-40 border border-[#E9F4FF] mx-4"></div>
                         <div className="max-w-xl mb-[50px] flex flex-col mt-6">
                             <Label className='font-normal text-sm mb-4'>Chief Complaints</Label>
-                            <p className="text-[11px]  leading-4 text-[#979797]">
+                            <p className="text-[11px] leading-4 text-[#979797]">
                                 {caseData.caseHistoryChiefComplaints || 'Not specified'}
                             </p>
                         </div>
@@ -100,9 +116,13 @@ const PatientCaseList = ({ patientCases, onOpenDialog }: PatientCaseListProps) =
                     )}
 
                     {caseData.caseStatus === 'ASSIGNED' && (
-                        <Link to="/live-case-profile">
-                            <Button variant="primary" className="absolute bottom-4 right-4 bg-[#023FC2] text-white w-72">View Details</Button>
-                        </Link>
+                        <Button
+                            variant="primary"
+                            className="absolute bottom-4 right-4 bg-[#023FC2] text-white w-72"
+                            onClick={() => handleViewDetails(caseData.emtCaseId)}
+                        >
+                            View Details
+                        </Button>
                     )}
                 </Card>
             ))}

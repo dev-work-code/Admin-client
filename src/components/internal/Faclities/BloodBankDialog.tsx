@@ -43,7 +43,7 @@ const BloodBankDialog: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   // Handle form submission
   const onSubmit = async (data: FormData) => {
     console.log(data);
-    
+
     setLoading(true); // Set loading to true when submitting
     try {
       // Prepare the form data
@@ -101,7 +101,7 @@ const BloodBankDialog: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent>
+      <AlertDialogContent className="rounded-2xl">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-2xl font-medium mb-6 ml-6 text-[#003CBF]">
             Add Blood-Bank

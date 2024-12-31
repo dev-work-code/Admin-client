@@ -1,9 +1,14 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/utils/api"; // Import the configured axios instance
 import { toast } from "@/hooks/use-toast";
+import { Card, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 // Define Zod schema for validation
 const schema = z.object({
@@ -63,59 +68,59 @@ const AdRoleForm = () => {
     };
 
     return (
-        <div className="max-w-lg mx-auto p-4 border border-gray-300 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">Profile Form</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Card className="max-w-5xl mx-auto p-4 border border-gray-300 rounded-[38px] mt-20  shadow-[2px_4px_5px_0px_#E9EBFFB2]">
+            <CardHeader className="text-2xl font-medium mb-2 text-[#003CBF]">Role</CardHeader>
+            <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-                    <input
+                    <Label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</Label>
+                    <Input
                         id="name"
                         type="text"
                         {...register("name")}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full border-none bg-[#E9F4FF] "
                     />
                     {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
                 </div>
 
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                    <input
+                    <Label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</Label>
+                    <Input
                         id="email"
                         type="email"
                         {...register("email")}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full border-none bg-[#E9F4FF] "
                     />
                     {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                 </div>
 
                 <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                    <input
+                    <Label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</Label>
+                    <Input
                         id="password"
                         type="password"
                         {...register("password")}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full border-none bg-[#E9F4FF] "
                     />
                     {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                 </div>
 
                 <div>
-                    <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Phone Number</label>
-                    <input
+                    <Label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Phone Number</Label>
+                    <Input
                         id="phoneNumber"
                         type="text"
                         {...register("phoneNumber")}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full border-none bg-[#E9F4FF] "
                     />
                     {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>}
                 </div>
 
                 <div>
-                    <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
+                    <Label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</Label>
                     <select
                         id="role"
                         {...register("role")}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full p-2 border bg-[#E9F4FF] border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="NURSING">NURSING</option>
                         <option value="ACCOUNTANT">ACCOUNTANT</option>
@@ -125,11 +130,11 @@ const AdRoleForm = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+                    <Label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</Label>
                     <select
                         id="gender"
                         {...register("gender")}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full p-2 border bg-[#E9F4FF] border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="MALE">MALE</option>
                         <option value="FEMALE">FEMALE</option>
@@ -139,47 +144,50 @@ const AdRoleForm = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
-                    <input
+                    <Label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</Label>
+                    <Input
                         id="dob"
                         type="date"
                         {...register("dob")}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full border-none bg-[#E9F4FF] "
                     />
                     {errors.dob && <p className="text-red-500 text-sm">{errors.dob.message}</p>}
                 </div>
 
                 <div>
-                    <label htmlFor="panCard" className="block text-sm font-medium text-gray-700">Pan Card</label>
-                    <input
+                    <Label htmlFor="panCard" className="block text-sm font-medium text-gray-700">Pan Card</Label>
+                    <Input
                         id="panCard"
                         type="text"
                         {...register("panCard")}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full border-none bg-[#E9F4FF] "
                     />
                     {errors.panCard && <p className="text-red-500 text-sm">{errors.panCard.message}</p>}
                 </div>
 
                 <div>
-                    <label htmlFor="aadharCard" className="block text-sm font-medium text-gray-700">Aadhar Card</label>
-                    <input
+                    <Label htmlFor="aadharCard" className="block text-sm font-medium text-gray-700">Aadhar Card</Label>
+                    <Input
                         id="aadharCard"
                         type="text"
                         {...register("aadharCard")}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full border-none bg-[#E9F4FF] "
                     />
                     {errors.aadharCard && <p className="text-red-500 text-sm">{errors.aadharCard.message}</p>}
                 </div>
 
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className={`w-full mt-4 py-2 px-4 rounded-md text-white ${loading ? 'bg-gray-500' : 'bg-blue-500'} hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                >
-                    {loading ? "Submitting..." : "Submit"}
-                </button>
+                <div className="relative top-24 left-4">
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        disabled={loading}
+                        className={`w-full mt-4 py-6 px-4  rounded-md text-white ${loading ? 'bg-gray-500' : 'bg-[#003CBF]'}`}
+                    >
+                        {loading ? <Loader2 className="h-5 w-5 animate-spin text-white" /> : "Submit"}
+                    </Button>
+                </div>
             </form>
-        </div>
+        </Card>
     );
 };
 

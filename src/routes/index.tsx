@@ -2,6 +2,8 @@ import RegisterScreen from "@/components/internal/AuthComponent/Register/Registe
 import DoctorDetailsPage from "@/components/internal/Doctor/DoctorDetailsPage";
 import MapPage from "@/components/internal/Faclities/MapPage";
 import LiveCaseProfile from "@/components/internal/LiveCases/LiveCasesProfile/LiveCaseProfile";
+import AdRoleForm from "@/components/internal/Roles/AddRoles";
+import RoleProfile from "@/components/internal/Roles/ProfilePage";
 import HomeLayout from "@/components/layout/HomeLayout";
 import Ambulance from "@/pages/Ambulance";
 import Dashboard from "@/pages/dashboard";
@@ -17,8 +19,6 @@ import Login from "@/pages/Login";
 import Maps from "@/pages/Maps";
 import NotFound from "@/pages/notFound";
 import Profile from "@/pages/Profile";
-import ProfileRolePage from "@/pages/ProfileRole";
-import ProfileRole from "@/pages/ProfileRole";
 import Roles from "@/pages/Roles";
 import { Suspense } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
@@ -97,12 +97,13 @@ export default function AppRouter() {
         },
         {
           path: "/profile/:id",
-          element: <ProfileRole />,
+          element: <RoleProfile />,
         },
         {
           path: "/add-role",
-          element: <ProfileRolePage />,
+          element: <AdRoleForm />,
         },
+
         {
           path: "/live-case-profile",
           element: <LiveCaseProfile />,

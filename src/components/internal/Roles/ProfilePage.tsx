@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
-const ProfilePage: React.FC = () => {
+const RoleProfile: React.FC = () => {
     const location = useLocation();
     const { profile } = location.state || {};
 
@@ -81,4 +81,4 @@ const ProfilePage: React.FC = () => {
     );
 };
 
-export default ProfilePage;
+export default RoleProfile;

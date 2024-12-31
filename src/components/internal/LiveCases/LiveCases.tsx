@@ -9,6 +9,7 @@ import DepartmentDialog from './Dept&Assign-Hospital/DepartmentDialog';
 import PatientCaseList from './liveCases/PatientCaseList';
 import AmbulanceCard from './liveCases/AmbulanceCard';
 import { Card } from '@/components/ui/card';
+import SkeletonLoader from '@/pages/common/SkeletonLoader';
 
 const PatientCaseCard = () => {
     const { data: patientCases, error, isLoading } = usePatientCases();
@@ -39,9 +40,8 @@ const PatientCaseCard = () => {
         );
     }, [assignAmbulance, selectedCaseId, selectedDriverId]);
 
-    if (isLoading) return <div className="text-center">Loading patient cases...</div>;
+    if (isLoading) return <SkeletonLoader fullPage />;
     if (error instanceof Error) return <div className="text-center text-red-500">Error: {error.message}</div>;
-
     return (
         <Card className="p-8 rounded-[38px]">
             {/* Use the PatientCaseList component */}
