@@ -37,17 +37,21 @@ const DoctorsTable: React.FC = () => {
         setOpenDialog(true);
     };
     const navigate = useNavigate();
-    const handleViewProfile = async (doctorId: string) => {
+    const handleViewProfile = async (doctorId: string, doctorApprovalStatus: string) => {
         try {
             const response = await api.get(`/admin/getDoctorsbyID`, {
                 params: { doctorId },
             });
+            if (doctorApprovalStatus === "APPROVED") {
+                navigate(`/doctor/${doctorId}`, { state: response.data });
+            }
+            else if (doctorApprovalStatus == "PENDING") {
+                navigate(`/doctor-details-status/${doctorId}`, { state: response.data });
+            }
+            else if (doctorApprovalStatus == "REJECTED") {
+                navigate(`/doctor-details-status/${doctorId}`, { state: response.data });
+            }
 
-            // Log the response to check the data structure
-            console.log("Doctor Profile Data:", response.data);
-
-            // Navigate to the profile page with data
-            navigate(`/doctor/${doctorId}`, { state: response.data });
         } catch (error) {
             console.error("Error fetching doctor profile:", error);
             alert("Failed to fetch doctor details.");
@@ -173,7 +177,7 @@ const DoctorsTable: React.FC = () => {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent>
                                                     <DropdownMenuItem
-                                                        onClick={() => handleViewProfile(doctor.doctorId)}
+                                                        onClick={() => handleViewProfile(doctor.doctorId, doctor.doctorApprovalStatus)}
                                                     >
                                                         View Profile
                                                     </DropdownMenuItem>

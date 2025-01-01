@@ -63,6 +63,7 @@ const LiveCaseProfile = () => {
           driverName={caseDetails.ambulanceDriver?.driverName || 'Unknown'}
           driverMobileNumber={caseDetails.ambulanceDriver?.driverMobileNumber || 'N/A'}
           registrationNumber={caseDetails.ambulanceDriver?.registrationNumber || 'N/A'}
+          meetLinks={caseDetails.meetLinks || {}}
         />
 
         <HospitalDetailsCard
@@ -77,7 +78,6 @@ const LiveCaseProfile = () => {
           patientAge={caseDetails.patientAge || 'N/A'}
           patientGender={caseDetails.patientGender || 'N/A'}
           phoneNumber1={caseDetails.phoneNumber1 || 'N/A'}
-          meetLinks={caseDetails.meetLinks || {}}
         />
 
         {/* Chief Complaints Card */}

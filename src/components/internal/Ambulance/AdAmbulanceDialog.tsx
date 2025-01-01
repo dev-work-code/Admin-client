@@ -5,11 +5,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
     AlertDialog,
     AlertDialogContent,
+    AlertDialogFooter,
     AlertDialogHeader,
 } from "@/components/ui/alert-dialog";
 import api from "@/utils/api";
 import { toast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 // Zod schema for form validation
 const registerDriverSchema = z.object({
@@ -37,6 +41,7 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<RegisterDriverFormData>({
         resolver: zodResolver(registerDriverSchema),
@@ -45,13 +50,20 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
     const [loading, setLoading] = useState(false);
 
     const onSubmit = async (data: RegisterDriverFormData) => {
-        console.log(data);
-
         setLoading(true);
         try {
             const formData = new FormData();
+
+            // Append other fields
             Object.entries(data).forEach(([key, value]) => {
-                formData.append(key, value as string | Blob);
+                if (key === "rcCopy") {
+                    const fileList = value as unknown as FileList;
+                    if (fileList.length > 0) {
+                        formData.append(key, fileList[0]); // Append the first file
+                    }
+                } else {
+                    formData.append(key, value as string | Blob);
+                }
             });
 
             const response = await api.post("/admin/registerDriver", formData, {
@@ -65,6 +77,7 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
                 variant: "default",
                 className: "bg-green-500 text-white",
             });
+            reset()
         } catch (error: any) {
             const errorMessage =
                 error.response?.data?.message || error.response?.data?.error || "Something went wrong!";
@@ -81,21 +94,27 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
 
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
-            <AlertDialogContent className="max-w-5xl">
+            <AlertDialogContent className="max-w-5xl rounded-[38px]">
+                <button
+                    className="absolute top-4 right-4 bg-[#E9F4FF] rounded-full text-[#013DC0] p-2"
+                    onClick={() => onOpenChange(false)}
+                >
+                    <X className="h-6 w-6" />
+                </button>
                 <AlertDialogHeader>
-                    <h2 className="text-lg font-semibold">Register Driver</h2>
+                    <h2 className="text-xl font-medium mb-2 text-[#003CBF] ml-4">Register Driver</h2>
                 </AlertDialogHeader>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="space-y-4 p-4"
+                    className="grid grid-cols-1 gap-4 md:grid-cols-2"
                     encType="multipart/form-data"
                 >
                     <div>
-                        <label className="block text-sm font-medium">Driver Name</label>
-                        <input
+                        <Label className="block text-sm font-medium">Driver Name</Label>
+                        <Input
                             type="text"
                             {...register("driverName")}
-                            className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full border-none bg-[#E9F4FF] "
                         />
                         {errors.driverName && (
                             <p className="text-sm text-red-500">{errors.driverName.message}</p>
@@ -103,11 +122,11 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium">Mobile Number</label>
-                        <input
+                        <Label className="block text-sm font-medium">Mobile Number</Label>
+                        <Input
                             type="text"
                             {...register("driverMobileNumber")}
-                            className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full border-none bg-[#E9F4FF] "
                         />
                         {errors.driverMobileNumber && (
                             <p className="text-sm text-red-500">
@@ -117,11 +136,11 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium">Type of Ambulance</label>
-                        <input
+                        <Label className="block text-sm font-medium">Type of Ambulance</Label>
+                        <Input
                             type="text"
                             {...register("typeOfAmbulance")}
-                            className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full border-none bg-[#E9F4FF] "
                         />
                         {errors.typeOfAmbulance && (
                             <p className="text-sm text-red-500">
@@ -131,11 +150,11 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium">Equipment</label>
-                        <input
+                        <Label className="block text-sm font-medium">Equipment</Label>
+                        <Input
                             type="text"
                             {...register("equipment")}
-                            className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full border-none bg-[#E9F4FF] "
                         />
                         {errors.equipment && (
                             <p className="text-sm text-red-500">{errors.equipment.message}</p>
@@ -143,11 +162,11 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium">Registered Hospital</label>
-                        <input
+                        <Label className="block text-sm font-medium">Registered Hospital</Label>
+                        <Input
                             type="text"
                             {...register("registeredHospital")}
-                            className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full border-none bg-[#E9F4FF] "
                         />
                         {errors.registeredHospital && (
                             <p className="text-sm text-red-500">
@@ -157,25 +176,27 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium">RC Copy Image</label>
+                        <Label className="block text-sm font-medium">RC Copy Image</Label>
                         <input
                             type="file"
                             {...register("rcCopy")}
-                            className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                         />
                         {errors.rcCopy && (
                             <p className="text-sm text-red-500">{errors.rcCopy.message}</p>
                         )}
                     </div>
-
-                    <button
-                        type="submit"
-                        className={`w-full rounded px-4 py-2 text-white ${loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
-                            }`}
-                        disabled={loading}
-                    >
-                        {loading ? <Loader2 className="h-5 w-5 animate-spin text-white" /> : "Register Driver"}
-                    </button>
+                    <AlertDialogFooter className="flex justify-end items-end">
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            className={`w-full rounded px-4 py-5 text-white ${loading ? "bg-gray-400" : "bg-[#003CBF]"
+                                }`}
+                            disabled={loading}
+                        >
+                            {loading ? <Loader2 className="h-5 w-5 animate-spin text-white" /> : "Register Driver"}
+                        </Button>
+                    </AlertDialogFooter>
                 </form>
             </AlertDialogContent>
         </AlertDialog>

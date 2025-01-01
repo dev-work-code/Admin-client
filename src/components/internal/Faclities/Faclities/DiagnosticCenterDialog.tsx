@@ -99,7 +99,7 @@ const DiagnosticCenterDialog: React.FC<{ isOpen: boolean; onClose: () => void }>
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent>
+      <AlertDialogContent className="rounded-xl">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-2xl font-medium mb-6 ml-6 text-[#003CBF]">
             Add Diagnostic

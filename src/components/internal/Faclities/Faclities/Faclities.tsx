@@ -14,10 +14,10 @@ import SkeletonLoader from "@/pages/common/SkeletonLoader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { useNavigate } from "react-router-dom";
 import BloodBankDialog from "./BloodBankDialog";
 import DiagnosticCenterDialog from "./DiagnosticCenterDialog";
 import PharmacyDialog from "./PharmacyDialog";
-import { useNavigate } from "react-router-dom";
 
 const FacilitiesTable: React.FC = () => {
     const { data, isLoading, error } = useFacilities();

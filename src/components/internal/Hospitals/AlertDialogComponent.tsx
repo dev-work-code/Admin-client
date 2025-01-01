@@ -71,8 +71,6 @@ const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
                 variant: 'default',
                 className: "bg-green-500 text-white",
             });
-
-            console.log('Success:', response.data);
         } catch (error: any) {
             const errorMessage = error.response?.data?.error || 'Something went wrong!';
             toast({

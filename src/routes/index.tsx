@@ -1,6 +1,7 @@
 import RegisterScreen from "@/components/internal/AuthComponent/Register/RegisterScreen";
 import DoctorDetailsPage from "@/components/internal/Doctor/DoctorDetailsPage";
-import MapPage from "@/components/internal/Faclities/MapPage";
+import DoctorProfileStatusComponent from "@/components/internal/Doctor/DoctorReject";
+import MapPage from "@/components/internal/Faclities/Maps/MapPage";
 import LiveCaseProfile from "@/components/internal/LiveCases/LiveCasesProfile/LiveCaseProfile";
 import AdRoleForm from "@/components/internal/Roles/AddRoles";
 import RoleProfile from "@/components/internal/Roles/ProfilePage";
@@ -48,6 +49,10 @@ export default function AppRouter() {
           element: <Ambulance />,
         },
         {
+          path: "/driver/:driverId",
+          element: <Ambulance />,
+        },
+        {
           path: "/profile",
           element: <Profile />,
         },
@@ -90,6 +95,10 @@ export default function AppRouter() {
         {
           path: "/doctor-details",
           element: <DoctorDetailsPage />,
+        },
+        {
+          path: "/doctor-details-status/:doctorId",
+          element: <DoctorProfileStatusComponent />,
         },
         {
           path: "/mapspage",

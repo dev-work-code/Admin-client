@@ -1,4 +1,4 @@
-import Faclities from '@/components/internal/Faclities/Faclities'
+import Faclities from "@/components/internal/Faclities/Faclities/Faclities"
 
 const Maps = () => {
   return (
