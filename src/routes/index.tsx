@@ -1,3 +1,4 @@
+import DriverDetails from "@/components/internal/Ambulance/DriverDetails";
 import RegisterScreen from "@/components/internal/AuthComponent/Register/RegisterScreen";
 import DoctorDetailsPage from "@/components/internal/Doctor/DoctorDetailsPage";
 import DoctorProfileStatusComponent from "@/components/internal/Doctor/DoctorReject";
@@ -50,7 +51,7 @@ export default function AppRouter() {
         },
         {
           path: "/driver/:driverId",
-          element: <Ambulance />,
+          element: <DriverDetails />,
         },
         {
           path: "/profile",

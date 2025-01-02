@@ -1,6 +1,8 @@
+import DashBoardComponent from "@/components/internal/DashBoard/DashBoard"
+
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <DashBoardComponent />
   )
 }
 

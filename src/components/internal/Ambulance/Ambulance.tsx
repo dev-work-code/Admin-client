@@ -35,7 +35,7 @@ const DriversTable: React.FC = () => {
   };
   const handleViewProfile = async (driverId: string) => {
     try {
-      const response = await api.get(`/admin/getDriverByID`, {
+      const response = await api.get(`/admin/getDriverbyID`, {
         params: { driverId },
       });
 

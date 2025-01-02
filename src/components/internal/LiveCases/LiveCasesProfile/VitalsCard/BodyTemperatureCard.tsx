@@ -7,7 +7,7 @@ interface BodyTemperatureCardProps {
 }
 
 const BodyTemperatureCard: FC<BodyTemperatureCardProps> = ({ bodyTemp }) => (
-  <Card className="relative w-[138px] h-[138px] p-2 border-[#FFE03A] shadow-[0px_4px_10px_1px_#1846551A]">
+  <Card className="relative w-[138px] h-[138px] p-2 border-[#FBE2B5] shadow-[0px_4px_10px_1px_#1846551A]">
     <div className="flex flex-col">
       <span className="text-[#A9A9A9] font-normal text-sm">Body</span>
       <span className="text-[#A9A9A9] font-normal text-sm">Temperature</span>

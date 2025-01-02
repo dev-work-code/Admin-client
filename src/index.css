@@ -149,3 +149,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* In your tailwind.css or globals.css */
+@layer components {
+  .hide-scrollbar {
+    @apply overflow-y-auto; /* Ensure vertical scrolling */
+    scrollbar-width: none; /* For Firefox */
+  }
+
+  /* Webkit browsers (Chrome, Safari) */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
