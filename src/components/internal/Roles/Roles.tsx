@@ -117,7 +117,21 @@ const RolesTable: React.FC = () => {
                                         <TableCell>{role.email || "N/A"}</TableCell>
                                         <TableCell>{role.phoneNumber}</TableCell>
                                         <TableCell>{role.gender}</TableCell>
-                                        <TableCell><Badge variant="nursing"> {role.role}</Badge></TableCell>
+                                        <TableCell className="w-1/7">
+                                            <Badge
+                                                variant="primary"
+                                                className={`${role.role === "CLEANER"
+                                                    ? "bg-[#FEF4E6] text-[#F9A63A]"
+                                                    : role.role === "NURSING"
+                                                        ? "bg-[#FEECEB] text-[#F36960]"
+                                                        : role.role === "ACCOUNTANT"
+                                                            ? "bg-[#E7F8F0] text-[#41C588]"
+                                                            : ""
+                                                    }`}
+                                            >
+                                                {role.role}
+                                            </Badge>
+                                        </TableCell>
                                         <TableCell className="text-right">
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger>
