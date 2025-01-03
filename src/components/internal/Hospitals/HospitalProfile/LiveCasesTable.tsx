@@ -2,6 +2,8 @@ import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical } from "lucide-react";
+import api from "@/utils/api";
+import { useNavigate } from "react-router-dom";
 
 interface EMT {
     emtId: string;
@@ -23,10 +25,24 @@ interface LiveCasesTableProps {
     onSearchQueryChange: (query: string) => void;
 }
 
+
 const LiveCasesTable: React.FC<LiveCasesTableProps> = ({ cases, searchQuery, onSearchQueryChange }) => {
+    const navigate = useNavigate(); // Initialize navigate
     const filteredLiveCases = cases.filter((emtCase) =>
         emtCase.patientName.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const handleViewDetails = async (caseId: string) => {
+        try {
+            const response = await api.get(`/admin/get-case-details?caseId=${caseId}`);
+            const caseDetails = response.data?.data;
+            console.log('Case Details:', caseDetails); // Replace this with any pre-processing if needed
+            // Redirect to the live case profile page
+            navigate('/live-case-profile', { state: { caseDetails } });
+        } catch (error) {
+            console.error('Failed to fetch case details:', error);
+        }
+    };
 
     return (
         <div className="space-y-4">
@@ -77,7 +93,7 @@ const LiveCasesTable: React.FC<LiveCasesTableProps> = ({ cases, searchQuery, onS
                                                 <EllipsisVertical className="cursor-pointer" />
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
-                                                <DropdownMenuItem>View Profile</DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => handleViewDetails(emtCase.emtCaseId)}>View Profile</DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>

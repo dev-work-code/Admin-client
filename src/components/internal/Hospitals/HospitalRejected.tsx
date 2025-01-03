@@ -2,9 +2,10 @@ import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { toast } from "@/hooks/use-toast"; // Corrected import
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import api from "@/utils/api";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 
 const HospitalProfile = () => {
     const { state } = useLocation();
@@ -36,6 +37,8 @@ const HospitalProfile = () => {
         }
     };
 
+    const safeValue = (value: any) => value || "N/A"; // Utility function for fallback
+
     if (!hospital) {
         return <div>No hospital data found.</div>;
     }
@@ -50,88 +53,105 @@ const HospitalProfile = () => {
         <div className="p-6 space-y-4 max-w-5xl mx-auto shadow-[2px_4px_5px_0px_#E9EBFFB2] rounded-[38px] border border-gray-300 relative">
             <div className="flex items-center space-x-4">
                 <img
-                    src={hospital.hospitalPhoto}
+                    src={safeValue(hospital.hospitalPhoto)}
                     alt="Image"
                     className="w-24 h-24 object-cover border rounded-full"
                 />
                 <div>
-                    <h1 className="text-2xl font-semibold">{hospital.hospitalName}</h1>
-                    <p className="text-gray-500">{hospital.hospitalLocation}</p>
-                    <p className="text-sm text-gray-400">{hospital.hospitalPhoneNumber}</p>
+                    <h1 className="text-2xl font-semibold">{safeValue(hospital.hospitalName)}</h1>
+                    <p className="text-gray-500">{safeValue(hospital.hospitalLocation)}</p>
+                    <p className="text-sm text-gray-400">{safeValue(hospital.hospitalPhoneNumber)}</p>
                 </div>
             </div>
 
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Hospital Details */}
                 <div>
                     <Label>Hospital ID</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalId}
+                        {safeValue(hospital.hospitalId)}
                     </Card>
                 </div>
                 <div>
                     <Label>Owner</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalOwnerDetails}
+                        {safeValue(hospital.hospitalOwnerDetails)}
                     </Card>
                 </div>
                 <div>
                     <Label>Services Offered</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalServicesOffered}
+                        {safeValue(hospital.hospitalServicesOffered)}
                     </Card>
                 </div>
                 <div>
                     <Label>Specialist Services</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalSpecialistServices}
+                        {safeValue(hospital.hospitalSpecialistServices)}
                     </Card>
                 </div>
                 <div>
                     <Label>Areas of Interest</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalAreasOfInterest}
+                        {safeValue(hospital.hospitalAreasOfInterest)}
                     </Card>
                 </div>
                 <div>
                     <Label>Date of Registration</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {new Date(hospital.hospitalDateOfRegistration).toLocaleDateString()}
+                        {safeValue(new Date(hospital.hospitalDateOfRegistration).toLocaleDateString())}
                     </Card>
                 </div>
                 <div>
                     <Label>Number of Beds</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalNumberOfBeds}
+                        {safeValue(hospital.hospitalNumberOfBeds)}
                     </Card>
                 </div>
                 <div>
                     <Label>Company Details</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalCompanyDetails}
+                        {safeValue(hospital.hospitalCompanyDetails)}
                     </Card>
                 </div>
                 <div>
                     <Label>DMHO Registration</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalDMHORegistration}
+                        {safeValue(hospital.hospitalDMHORegistration)}
                     </Card>
                 </div>
                 <div>
                     <Label>PAN</Label>
                     <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalCompanyPAN}
+                        {safeValue(hospital.hospitalCompanyPAN)}
                     </Card>
                 </div>
                 <div>
                     <Label>Incorporating Certificate</Label>
-                    <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {hospital.hospitalIncorporatingCertificate}
-                    </Card>
+                    {safeValue(hospital.hospitalIncorporatingCertificate) === "N/A" ? (
+                        <Card className="border p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
+                            N/A
+                        </Card>
+                    ) : (
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Card className="border-none shadow-none p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base text-center cursor-pointer">
+                                    View Incorporating Certificate
+                                </Card>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px] bg-[#E9F4FF] rounded-xl">
+                                <DialogHeader>
+                                    <DialogDescription className="flex items-center justify-center">
+                                        Incorporating Certificate
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                    <img src={safeValue(hospital.hospitalIncorporatingCertificate)} alt="Incorporating Certificate" />
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+                    )}
                 </div>
             </div>
-
-            {/* Status Update Button */}
             <div className="flex justify-end items-center gap-6">
                 <div>
                     <select

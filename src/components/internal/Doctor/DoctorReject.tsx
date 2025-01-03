@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"; // Assuming you have a Button c
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast"; // Corrected import
 import api from "@/utils/api";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 
 const DoctorProfileStatusComponent = () => {
     // Get the doctor data passed via state
@@ -123,15 +124,43 @@ const DoctorProfileStatusComponent = () => {
                 </div>
                 <div>
                     <Label>Medical License</Label>
-                    <Card className="border-none shadow-none p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {doctor.medicalLicense || "N/A"}
-                    </Card>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Card className="border-none shadow-none p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base text-center cursor-pointer">
+                                View Medical License
+                            </Card>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px] bg-[#E9F4FF] rounded-xl">
+                            <DialogHeader>
+                                <DialogDescription className="flex items-center justify-center">
+                                    Medical License
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <img src={doctor.medicalLicense} alt="" />
+                            </div>
+                        </DialogContent>
+                    </Dialog>
                 </div>
                 <div>
                     <Label>Pan Card</Label>
-                    <Card className="border-none shadow-none p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base">
-                        {doctor.panCard || "N/A"}
-                    </Card>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Card className="border-none shadow-none p-2 rounded-md bg-[#E9F4FF] text-[#013DC0] font-medium text-base text-center cursor-pointer">
+                                View Pan Card
+                            </Card>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px] bg-[#E9F4FF] rounded-xl">
+                            <DialogHeader>
+                                <DialogDescription className="flex items-center justify-center">
+                                    Pan Card
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <img src={doctor.panCard} alt="" />
+                            </div>
+                        </DialogContent>
+                    </Dialog>
                 </div>
                 <div>
                     <Label>Practice Location</Label>

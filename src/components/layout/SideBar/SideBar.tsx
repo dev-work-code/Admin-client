@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavMain } from "./NavMain";
 import Logo from "@/assets/Liv PrivateLimited Transprent 1.svg";
@@ -79,7 +80,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-      {/* <SidebarRail /> */}
+      <SidebarRail />
     </Sidebar>
   );
 }

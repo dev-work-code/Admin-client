@@ -33,17 +33,24 @@ const DriversTable: React.FC = () => {
   const handleAddDriver = () => {
     setOpenDialog(true);
   };
-  const handleViewProfile = async (driverId: string) => {
+  const handleViewProfile = async (driverId: string, ApprovalStatus: string) => {
     try {
       const response = await api.get(`/admin/getDriverbyID`, {
         params: { driverId },
       });
+      if (ApprovalStatus === "APPROVED") {
+        navigate(`/driver/${driverId}`, { state: response.data });
+      }
+      else if (ApprovalStatus == "PENDING") {
+        navigate(`/ambulance-driver-status/${driverId}`, { state: response.data });
+      }
+      else if (ApprovalStatus == "REJECTED") {
+        navigate(`/ambulance-driver-status/${driverId}`, { state: response.data });
+      }
 
-      // Navigate to the profile page with data
-      navigate(`/driver/${driverId}`, { state: response.data });
     } catch (error) {
-      console.error("Error fetching driver profile:", error);
-      alert("Failed to fetch driver details.");
+      console.error("Error fetching doctor profile:", error);
+      alert("Failed to fetch doctor details.");
     }
   };
 
@@ -166,7 +173,7 @@ const DriversTable: React.FC = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                           <DropdownMenuItem
-                            onClick={() => handleViewProfile(driver.driverId)}
+                            onClick={() => handleViewProfile(driver.driverId, driver.driverApprovalStatus)}
                           >
                             View Profile
                           </DropdownMenuItem>

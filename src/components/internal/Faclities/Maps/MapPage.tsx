@@ -4,9 +4,8 @@ import { useLocation } from 'react-router-dom';
 import SkeletonLoader from '@/pages/common/SkeletonLoader';
 import { Card } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import api from '@/utils/api';
-import { AlignRight } from 'lucide-react';
+import { AlignRight, Search } from 'lucide-react';
 
 type FacilityLocation = {
   id: string;
@@ -16,12 +15,12 @@ type FacilityLocation = {
 };
 
 const FacilityMap: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<string>('Pharmacy');
   const [facilities, setFacilities] = useState<FacilityLocation[]>([]);
   const [selectedFacility, setSelectedFacility] = useState<FacilityLocation | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [map, setMap] = useState<google.maps.Map | null>(null);
 
   const [showPharmacy, setShowPharmacy] = useState(true);
   const [showDiagnostics, setShowDiagnostics] = useState(false);
@@ -85,6 +84,14 @@ const FacilityMap: React.FC = () => {
     facility.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleMarkerClick = (facility: FacilityLocation) => {
+    setSelectedFacility(facility);
+    if (map) {
+      map.setZoom(18); // Adjust the zoom level as needed
+      map.setCenter({ lat: facility.latitude, lng: facility.longitude });
+    }
+  };
+
   if (!facilityLocation) {
     return <p>No location provided.</p>;
   }
@@ -96,8 +103,24 @@ const FacilityMap: React.FC = () => {
 
   return (
     <>
-      <div className='flex items-center justify-between'>
-        <h2 className="mb-4 text-2xl font-normal ml-20 mt-4 text-[#013DC0]">{facilityName}</h2>
+      <div className='flex items-center  justify-between'>
+        <div className='flex items-center justify-center gap-4 ml-4'>
+          <h2 className="mb-4 text-2xl font-normal  mt-4 text-[#013DC0]">{facilityName}</h2>
+          <div>
+            <div className='relative w-full md:w-80 shadow-[5px_5px_20px_0px_#61ABEB33] rounded-full'>
+              <input
+                type="text"
+                placeholder={`Search ${facilityName}s by name`}
+                className="w-full border px-4 py-3 rounded-full pr-12 text-sm bg-white"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#003CBF] p-2.5 rounded-full">
+                <Search className="text-white" />
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="flex justify-end p-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -143,20 +166,10 @@ const FacilityMap: React.FC = () => {
 
       <div className="flex h-full max-w-8xl p-2 space-x-4">
         {/* Sidebar */}
-        <Card className="w-64 p-4 bg-white rounded-lg shadow-lg overflow-y-auto hide-scrollbar">
+        <Card className="w-64 p-4 bg-white rounded-xl shadow-lg overflow-y-auto">
           <h2 className="mb-4 text-lg font-bold">Available {facilityName}s</h2>
-
-          {/* Search Bar */}
-          <input
-            type="text"
-            placeholder={`Search ${facilityName}s by name`}
-            className="p-2 border rounded mb-4 w-full"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-
           {isLoading ? (
-            <p>Loading...</p>
+            <SkeletonLoader fullPage />
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : filteredFacilities.length === 0 ? (
@@ -187,7 +200,8 @@ const FacilityMap: React.FC = () => {
                   ? { lat: selectedFacility.latitude, lng: selectedFacility.longitude }
                   : facilityLocation
               }
-              zoom={15}
+              zoom={20}
+              onLoad={(map) => setMap(map)}
             >
               {/* Facility Marker */}
               <Marker position={facilityLocation} title="Facility Location" />
@@ -198,6 +212,7 @@ const FacilityMap: React.FC = () => {
                   key={facility.id}
                   position={{ lat: facility.latitude, lng: facility.longitude }}
                   title={facility.name}
+                  onClick={() => handleMarkerClick(facility)}
                   icon={
                     selectedFacility?.id === facility.id
                       ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'

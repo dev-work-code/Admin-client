@@ -50,6 +50,10 @@ export default function AppRouter() {
           element: <Ambulance />,
         },
         {
+          path: "/ambulance-driver-status/:driverId",
+          element: <DoctorProfileStatusComponent />,
+        },
+        {
           path: "/driver/:driverId",
           element: <DriverDetails />,
         },

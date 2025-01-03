@@ -44,7 +44,6 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="p-6">
-            <h1 className="text-2xl font-bold text-center mb-6">Dashboard Stats</h1>
             <div className="flex flex-wrap gap-4 justify-center">
                 {stats && (
                     <>

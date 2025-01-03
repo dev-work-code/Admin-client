@@ -87,6 +87,8 @@ const HospitalProfile: React.FC = () => {
         .filter((patient) =>
             patient.patientName.toLowerCase().includes(patientSearchQuery.toLowerCase())
         );
+
+        
     const renderContent = () => {
         switch (selectedCategory) {
             case "overview":
@@ -161,7 +163,7 @@ const HospitalProfile: React.FC = () => {
                         <button
                             key={key}
                             onClick={() => setSelectedCategory(key)}
-                            className={`block w-full text-left p-2 rounded-md ${selectedCategory === key ? "bg-blue-100 text-black" : "text-gray-700"
+                            className={`block w-full text-left p-2 rounded-lg ${selectedCategory === key ? "bg-blue-100 text-black" : "text-gray-700"
                                 }`}
                         >
                             {label}

@@ -1,6 +1,8 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import api from "@/utils/api";
 
 interface Doctor {
     doctorId: string;
@@ -20,6 +22,18 @@ const DoctorList: React.FC<DoctorListProps> = ({ doctors, doctorSearchQuery, set
     const filteredDoctors = doctors.filter((doctor) =>
         doctor.doctorName.toLowerCase().includes(doctorSearchQuery.toLowerCase())
     );
+    const navigate = useNavigate();
+    const handleViewProfile = async (doctorId: string) => {
+        try {
+            const response = await api.get(`/admin/getDoctorsbyID`, {
+                params: { doctorId },
+            });
+            navigate(`/doctor/${doctorId}`, { state: response.data });
+        } catch (error) {
+            console.error("Error fetching doctor profile:", error);
+            alert("Failed to fetch doctor details.");
+        }
+    };
 
     return (
         <div className="space-y-4">
@@ -43,7 +57,7 @@ const DoctorList: React.FC<DoctorListProps> = ({ doctors, doctorSearchQuery, set
             {/* Doctor List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {filteredDoctors?.map((doctor) => (
-                    <Card key={doctor.doctorId} className="p-4 space-y-2 border border-[#6298FF33] h-40">
+                    <Card key={doctor.doctorId} className="p-4 space-y-2 border border-[#6298FF33] h-40 cursor-pointer" onClick={() => handleViewProfile(doctor.doctorId)}>
                         <div className="flex flex-col items-center justify-center space-x-4">
                             <img
                                 src={doctor.doctorPhoto}
