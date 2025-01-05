@@ -1,9 +1,8 @@
-// PatientTable.tsx
-
 import React from "react";
 import { Table, TableBody, TableCell, TableHeader, TableRow, TableHead } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Patient } from "../HospitalProflie";
 
 interface PatientTableProps {
@@ -13,9 +12,16 @@ interface PatientTableProps {
 }
 
 const PatientTable: React.FC<PatientTableProps> = ({ patients, searchQuery, onSearchQueryChange }) => {
+    const navigate = useNavigate(); // Hook to navigate to a new page
+
     const filteredPatients = patients.filter((patient) =>
         patient.patientName.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const handleViewProfile = (patientId: string) => {
+        // Redirect to the profile page of the selected patient
+        navigate(`/patient-profile/${patientId}`);
+    };
 
     return (
         <div className="space-y-4">
@@ -64,7 +70,9 @@ const PatientTable: React.FC<PatientTableProps> = ({ patients, searchQuery, onSe
                                                 <EllipsisVertical className="cursor-pointer" />
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() => handleViewProfile(patient.patientId)}
+                                                >
                                                     View Profile
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>

@@ -3,6 +3,7 @@ import RegisterScreen from "@/components/internal/AuthComponent/Register/Registe
 import DoctorDetailsPage from "@/components/internal/Doctor/DoctorDetailsPage";
 import DoctorProfileStatusComponent from "@/components/internal/Doctor/DoctorReject";
 import MapPage from "@/components/internal/Faclities/Maps/MapPage";
+import PatientProfile from "@/components/internal/Hospitals/HospitalProfile/PatientProfile";
 import LiveCaseProfile from "@/components/internal/LiveCases/LiveCasesProfile/LiveCaseProfile";
 import AdRoleForm from "@/components/internal/Roles/AddRoles";
 import RoleProfile from "@/components/internal/Roles/ProfilePage";
@@ -88,6 +89,10 @@ export default function AppRouter() {
         {
           path: "/hospital-profile/:hospitalId",
           element: <HospitalReject />,
+        },
+        {
+          path: "/patient-profile/:patientId",
+          element: <PatientProfile />,
         },
         {
           path: "/doctor/:doctorId",
