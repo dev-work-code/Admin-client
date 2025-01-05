@@ -1,16 +1,59 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import api from "@/utils/api"; // Import the API instance
+import { toast } from "@/hooks/use-toast"; // Correct import for toast
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const DoctorDetailsPage = () => {
     // Get the doctor data passed via state
     const { state } = useLocation();
     const doctor = state?.data;
 
+    const navigate = useNavigate(); // Instantiate the navigate function
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
     // Ensure doctor data is available
     if (!doctor) {
         return <div>No doctor data found.</div>;
     }
+
+    const handleDelete = async () => {
+        setIsDeleting(true);
+        try {
+            const response = await api.delete(`/admin/deleteDoctor?id=${doctor.doctorId}`);
+
+            if (response.status === 200) {
+                // Show success toast notification
+                toast({
+                    description: "Doctor has been successfully deleted.",
+                    variant: "default",
+                    className: "bg-green-500 text-white"
+                });
+
+                // Navigate back to the previous page after successful deletion
+                setTimeout(() => {
+                    navigate(-2); // Go back to the previous page
+                }, 1000); // Optional delay for a better user experience
+            } else {
+                setError("Failed to delete doctor.");
+            }
+        } catch (err: any) {
+            const errorMessage = err.response?.data?.error || "Network error occurred!";
+            // Show error toast notification
+            toast({
+                description: errorMessage,
+                variant: "destructive",
+                className: "bg-red-500 text-white"
+            });
+
+            setError(errorMessage);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     return (
         <Card className="p-6 space-y-4 max-w-5xl mx-auto shadow-[2px_4px_5px_0px_#E9EBFFB2] rounded-[38px] border border-gray-300">
@@ -102,6 +145,18 @@ const DoctorDetailsPage = () => {
                         {doctor.practiceLocation || "N/A"}
                     </Card>
                 </div>
+            </div>
+
+            {/* Delete Button */}
+            <div className="mt-4">
+                {error && <p className="text-red-500">{error}</p>}
+                <Button
+                    className="bg-red-500 text-white py-2 px-4"
+                    onClick={handleDelete}
+                    disabled={isDeleting}
+                >
+                    {isDeleting ? "Deleting..." : "Delete Doctor"}
+                </Button>
             </div>
         </Card>
     );

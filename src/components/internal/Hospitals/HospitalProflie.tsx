@@ -51,6 +51,7 @@ interface Department {
 }
 
 export interface Hospital {
+    hospitalId:string;
     hospitalLocation: string;
     hospitalPhoneNumber: string;
     hospitalWorkingHours: string;
@@ -87,8 +88,6 @@ const HospitalProfile: React.FC = () => {
         .filter((patient) =>
             patient.patientName.toLowerCase().includes(patientSearchQuery.toLowerCase())
         );
-
-        
     const renderContent = () => {
         switch (selectedCategory) {
             case "overview":

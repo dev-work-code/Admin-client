@@ -1,4 +1,3 @@
-// PatientCaseCard.tsx
 import { useState, useCallback } from 'react';
 import usePatientCases from '@/hooks/usePatientCases';
 import useAvailableAmbulances from '@/hooks/useAvailableAmbulances';
@@ -11,7 +10,11 @@ import AmbulanceCard from './liveCases/AmbulanceCard';
 import { Card } from '@/components/ui/card';
 import SkeletonLoader from '@/pages/common/SkeletonLoader';
 
-const PatientCaseCard = () => {
+interface PatientCaseCardProps {
+    withCard?: boolean;
+}
+
+const PatientCaseCard: React.FC<PatientCaseCardProps> = ({ withCard = true }) => {
     const { data: patientCases, error, isLoading } = usePatientCases();
     const { data: ambulances, isLoading: ambulancesLoading } = useAvailableAmbulances();
     const { mutate: assignAmbulance, isPending: assigning } = useAssignAmbulance();
@@ -42,8 +45,9 @@ const PatientCaseCard = () => {
 
     if (isLoading) return <SkeletonLoader fullPage />;
     if (error instanceof Error) return <div className="text-center text-red-500">Error: {error.message}</div>;
-    return (
-        <Card className="p-8 rounded-[38px]">
+
+    const content = (
+        <>
             {/* Use the PatientCaseList component */}
             <PatientCaseList patientCases={patientCases || []} onOpenDialog={handleOpenDialog} />
             <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -88,7 +92,16 @@ const PatientCaseCard = () => {
                 onClose={() => setIsDepartmentDialogOpen(false)}
                 caseId={selectedCaseId}
             />
-        </Card>
+        </>
+    );
+
+    // Conditional padding based on withCard prop
+    const cardPadding = withCard ? 'p-10' : 'px-14';
+
+    return withCard ? (
+        <Card className={`rounded-[38px] ${cardPadding}`}>{content}</Card>
+    ) : (
+        <div className={cardPadding}>{content}</div>
     );
 };
 
