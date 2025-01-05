@@ -1,5 +1,5 @@
-// @/utils/cookies.ts
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 // Define the name and options for the authentication cookie
 const COOKIE_NAME = "auth";
@@ -8,13 +8,18 @@ const COOKIE_OPTIONS = {
   path: "/", // Ensure cookie is available across the entire domain
   secure: process.env.NODE_ENV === "production", // Use secure flag only in production
   sameSite: "Strict" as const, // Enforce same-site policy for security
-  // HttpOnly cannot be set here, consider setting cookies from the server for better security
 };
 
 // Define the shape of the authentication cookie
 interface AuthUser {
   token: string;
-  role?: string | null; // Make role optional
+  role?: string | null;
+  adminId?: string;
+  adminEmail?: string;
+  adminMobileNumber?: string;
+  adminName?: string;
+  iat?: number;
+  exp?: number;
 }
 
 /**
@@ -46,7 +51,7 @@ export const clearAuthCookies = () => {
 
 /**
  * Retrieves the authentication token and role from the cookie.
- * @returns The AuthUser object if the cookie exists, otherwise null.
+ * @returns The AuthUser object with decoded token if the cookie exists, otherwise null.
  */
 export const getAuthCookies = (): AuthUser | null => {
   try {
@@ -54,16 +59,18 @@ export const getAuthCookies = (): AuthUser | null => {
     const cookie = Cookies.get(COOKIE_NAME);
     const authUser = cookie ? JSON.parse(cookie) : null;
 
-    // Validate the structure of the authUser object
-    if (
-      authUser &&
-      typeof authUser.token === "string" &&
-      authUser.token.length > 0 &&
-      (typeof authUser.role === "string" ||
-        authUser.role === null ||
-        authUser.role === undefined)
-    ) {
-      return authUser;
+    // If the cookie exists, decode the token to extract additional info
+    if (authUser && authUser.token) {
+      const decodedToken = jwtDecode<any>(authUser.token);
+
+      // Merge the decoded token data into the authUser object
+      return {
+        ...authUser,
+        adminEmail: decodedToken.adminEmail,
+        adminMobileNumber: decodedToken.adminMobileNumber,
+        adminName: decodedToken.adminName,
+        role: decodedToken.role,
+      };
     }
 
     return null;

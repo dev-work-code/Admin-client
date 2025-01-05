@@ -1,131 +1,132 @@
-import DriverDetails from "@/components/internal/Ambulance/DriverDetails";
-import RegisterScreen from "@/components/internal/AuthComponent/Register/RegisterScreen";
-import DoctorDetailsPage from "@/components/internal/Doctor/DoctorDetailsPage";
-import DoctorProfileStatusComponent from "@/components/internal/Doctor/DoctorReject";
-import MapPage from "@/components/internal/Faclities/Maps/MapPage";
-import PatientProfile from "@/components/internal/Hospitals/HospitalProfile/PatientProfile";
-import LiveCaseProfile from "@/components/internal/LiveCases/LiveCasesProfile/LiveCaseProfile";
-import AdRoleForm from "@/components/internal/Roles/AddRoles";
-import RoleProfile from "@/components/internal/Roles/ProfilePage";
-import HomeLayout from "@/components/layout/HomeLayout";
-import Ambulance from "@/pages/Ambulance";
-import Dashboard from "@/pages/dashboard";
-import DoctorsPage from "@/pages/Doctor";
-import Doctor from "@/pages/Doctor";
-import DoctorProfilePage from "@/pages/DoctorProfile";
-import Home from "@/pages/home";
-import HospitalProfil from "@/pages/HospitalProfile";
-import HospitalReject from "@/pages/HospitalReject";
-import Hospitals from "@/pages/Hospitals";
-import LiveCases from "@/pages/LiveCases";
-import Login from "@/pages/Login";
-import Maps from "@/pages/Maps";
-import NotFound from "@/pages/notFound";
-import Profile from "@/pages/Profile";
-import Roles from "@/pages/Roles";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import { ProtectedRoute } from "./routesProtection"; // Assuming ProtectedRoute is in the same folder
+
+// Lazy load components
+const DriverDetails = lazy(() => import("@/components/internal/Ambulance/DriverDetails"));
+const RegisterScreen = lazy(() => import("@/components/internal/AuthComponent/Register/RegisterScreen"));
+const DoctorDetailsPage = lazy(() => import("@/components/internal/Doctor/DoctorDetailsPage"));
+const DoctorProfileStatusComponent = lazy(() => import("@/components/internal/Doctor/DoctorReject"));
+const MapPage = lazy(() => import("@/components/internal/Faclities/Maps/MapPage"));
+const PatientProfile = lazy(() => import("@/components/internal/Hospitals/HospitalProfile/PatientProfile"));
+const LiveCaseProfile = lazy(() => import("@/components/internal/LiveCases/LiveCasesProfile/LiveCaseProfile"));
+const AdRoleForm = lazy(() => import("@/components/internal/Roles/AddRoles"));
+const RoleProfile = lazy(() => import("@/components/internal/Roles/ProfilePage"));
+const HomeLayout = lazy(() => import("@/components/layout/HomeLayout"));
+const Ambulance = lazy(() => import("@/pages/Ambulance"));
+const Dashboard = lazy(() => import("@/pages/dashboard"));
+const DoctorsPage = lazy(() => import("@/pages/Doctor"));
+const Doctor = lazy(() => import("@/pages/Doctor"));
+const DoctorProfilePage = lazy(() => import("@/pages/DoctorProfile"));
+const HospitalProfil = lazy(() => import("@/pages/HospitalProfile"));
+const HospitalReject = lazy(() => import("@/pages/HospitalReject"));
+const Hospitals = lazy(() => import("@/pages/Hospitals"));
+const LiveCases = lazy(() => import("@/pages/LiveCases"));
+const Login = lazy(() => import("@/pages/Login"));
+const Maps = lazy(() => import("@/pages/Maps"));
+const NotFound = lazy(() => import("@/pages/notFound"));
+const Profile = lazy(() => import("@/pages/Profile"));
+const Roles = lazy(() => import("@/pages/Roles"));
 
 export default function AppRouter() {
   const privateRoutes = [
     {
       path: "/",
       element: (
-        <HomeLayout>
-          <Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
+          <HomeLayout>
             <Outlet />
-          </Suspense>
-        </HomeLayout>
+          </HomeLayout>
+        </Suspense>
       ),
       children: [
         {
-          element: <Home />,
+          element: <ProtectedRoute element={<Dashboard />} />,
           index: true,
         },
         {
           path: "/doctor",
-          element: <Doctor />,
+          element: <ProtectedRoute element={<Doctor />} />,
         },
         {
           path: "/ambulance",
-          element: <Ambulance />,
+          element: <ProtectedRoute element={<Ambulance />} />,
         },
         {
           path: "/ambulance-driver-status/:driverId",
-          element: <DoctorProfileStatusComponent />,
+          element: <ProtectedRoute element={<DoctorProfileStatusComponent />} />,
         },
         {
           path: "/driver/:driverId",
-          element: <DriverDetails />,
+          element: <ProtectedRoute element={<DriverDetails />} />,
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: <ProtectedRoute element={<Profile />} />,
         },
         {
           path: "/maps",
-          element: <Maps />,
+          element: <ProtectedRoute element={<Maps />} />,
         },
         {
           path: "/role",
-          element: <Roles />,
+          element: <ProtectedRoute element={<Roles />} />,
         },
         {
           path: "/dashboard",
-          element: <Dashboard />,
+          element: <ProtectedRoute element={<Dashboard />} />,
         },
         {
           path: "/livecases",
-          element: <LiveCases />,
+          element: <ProtectedRoute element={<LiveCases />} />,
         },
         {
           path: "/hospitals",
-          element: <Hospitals />,
+          element: <ProtectedRoute element={<Hospitals />} />,
         },
         {
           path: "/hospital/:hospitalId",
-          element: <HospitalProfil />,
+          element: <ProtectedRoute element={<HospitalProfil />} />,
         },
         {
           path: "/hospital-profile/:hospitalId",
-          element: <HospitalReject />,
+          element: <ProtectedRoute element={<HospitalReject />} />,
         },
         {
           path: "/patient-profile/:patientId",
-          element: <PatientProfile />,
+          element: <ProtectedRoute element={<PatientProfile />} />,
         },
         {
           path: "/doctor/:doctorId",
-          element: <DoctorProfilePage />,
+          element: <ProtectedRoute element={<DoctorProfilePage />} />,
         },
         {
           path: "/doctor",
-          element: <DoctorsPage />,
+          element: <ProtectedRoute element={<DoctorsPage />} />,
         },
         {
           path: "/doctor-details",
-          element: <DoctorDetailsPage />,
+          element: <ProtectedRoute element={<DoctorDetailsPage />} />,
         },
         {
           path: "/doctor-details-status/:doctorId",
-          element: <DoctorProfileStatusComponent />,
+          element: <ProtectedRoute element={<DoctorProfileStatusComponent />} />,
         },
         {
           path: "/mapspage",
-          element: <MapPage />,
+          element: <ProtectedRoute element={<MapPage />} />,
         },
         {
           path: "/profile/:id",
-          element: <RoleProfile />,
+          element: <ProtectedRoute element={<RoleProfile />} />,
         },
         {
           path: "/add-role",
-          element: <AdRoleForm />,
+          element: <ProtectedRoute element={<AdRoleForm />} />,
         },
-
         {
           path: "/live-case-profile",
-          element: <LiveCaseProfile />,
+          element: <ProtectedRoute element={<LiveCaseProfile />} />,
         },
       ],
     },
@@ -138,11 +139,11 @@ export default function AppRouter() {
     },
     {
       path: "/register",
-      element: <RegisterScreen />,
+      element: <ProtectedRoute element={<RegisterScreen />} isPublic />,
     },
     {
       path: "/login",
-      element: <Login />,
+      element: <ProtectedRoute element={<Login />} isPublic />,
     },
     {
       path: "*",

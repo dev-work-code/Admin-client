@@ -9,11 +9,11 @@ import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
-    CardHeader,
-    CardTitle,
+    CardFooter,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
 
 
 // Define the Zod schema for validation
@@ -74,10 +74,7 @@ const AdminRegisterForm: React.FC = () => {
 
     return (
         <div className="max-w-xl mx-auto mb-8">
-            <Card >
-                <CardHeader>
-                    <CardTitle className="text-center text-2xl font-medium text-[#013DC0]">Admin Registration</CardTitle>
-                </CardHeader>
+            <Card  className="border-none shadow-none">
                 <CardContent>
                     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4">
                         <div className="grid gap-2 w-full sm:w-96">
@@ -143,6 +140,10 @@ const AdminRegisterForm: React.FC = () => {
                         </div>
                     </form>
                 </CardContent>
+                <CardFooter className="flex items-center justify-center">
+                    Already have an account? <Link to="/login">
+                        <span className="ml-2 text-[#013DC0]">Log in</span></Link>
+                </CardFooter>
             </Card>
         </div>
     );
