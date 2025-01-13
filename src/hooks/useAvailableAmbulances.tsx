@@ -1,5 +1,5 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import api from '@/utils/api';  // Import your custom API instance
+import api from '@/utils/api'; // Import your custom API instance
 
 // Define the types for the response data
 type Driver = {
@@ -20,9 +20,7 @@ type Driver = {
 type FetchDriversResponse = {
   success: boolean;
   message: string;
-  data: {
-    drivers: Driver[];
-  };
+  data: Driver[];
 };
 
 // Create the custom hook to fetch available ambulance drivers
@@ -32,7 +30,8 @@ const useAvailableAmbulances = () => {
     queryFn: async () => {
       const response = await api.get<FetchDriversResponse>('/admin/get-available-drivers'); // Make API call
       if (response.data.success) {
-        return response.data.data.drivers; // Return the list of drivers
+        console.log(response.data.data);
+        return response.data.data; // Return the list of drivers
       } else {
         throw new Error('Failed to fetch available drivers');
       }

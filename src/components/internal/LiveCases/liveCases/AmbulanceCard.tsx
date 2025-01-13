@@ -1,5 +1,6 @@
 // AmbulanceCard.tsx
 import { Card } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 
 interface AmbulanceCardProps {
     ambulance: any;
@@ -18,12 +19,12 @@ const AmbulanceCard = ({ ambulance, selectedDriverId, onClick }: AmbulanceCardPr
             style={{ boxShadow: '5px 5px 20px 0px #013DC014' }}
             onClick={() => onClick(ambulance.driverId)}
         >
-            <div className="w-24 h-24 bg-gray-200 border border-[#668EDB] flex-shrink-0 rounded-md overflow-hidden">
+            <div className="w-24 h-24  border border-[#668EDB] flex-shrink-0 rounded-md overflow-hidden">
                 {ambulance.ambulancePhoto ? (
                     <img
                         src={ambulance.ambulancePhoto}
                         alt="Ambulance"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                     />
                 ) : (
                     <div className="flex items-center justify-center h-full text-gray-500 text-sm">
@@ -32,15 +33,34 @@ const AmbulanceCard = ({ ambulance, selectedDriverId, onClick }: AmbulanceCardPr
                 )}
             </div>
             <div className="ml-4 flex flex-col gap-2">
-                <span className="text-sm font-semibold text-gray-800">
-                    {ambulance.driverName}
-                </span>
-                <span className="text-sm text-gray-600 text-wrap">
-                    Ambulance No: {ambulance.registrationNumber || 'N/A'}
-                </span>
-                <span className="text-sm text-gray-600">
-                    Type: {ambulance.typeOfAmbulance || 'N/A'}
-                </span>
+                <div className='flex items-center gap-1'>
+                    <Label className='text-[10px] text-[#95A0B8]'>
+                        Driver Name-
+                    </Label>
+                    <p className="text-xs font-semibold text-gray-800">
+                        {ambulance.driverName}
+                    </p>
+                </div>
+                <div className='flex items-center gap-1'>
+                    <Label className='text-[10px] text-[#95A0B8]'>
+                        Ambulance no-
+                    </Label>
+                    <p className="text-xs font-semibold text-gray-800">
+                        {ambulance.registrationNumber
+                            ? (ambulance.registrationNumber.length > 10
+                                ? `${ambulance.registrationNumber.slice(0, 10)}...`
+                                : ambulance.registrationNumber)
+                            : 'N/A'}
+                    </p>
+                </div>
+                <div className='flex items-center gap-1'>
+                    <Label className='text-[10px] text-[#95A0B8]'>
+                        Ambulance Type -
+                    </Label>
+                    <p className="text-xs font-semibold text-gray-800">
+                        {ambulance.typeOfAmbulance || 'N/A'}
+                    </p>
+                </div>
             </div>
         </Card>
     );
