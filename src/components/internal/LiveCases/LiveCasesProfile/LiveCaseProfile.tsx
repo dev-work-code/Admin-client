@@ -10,7 +10,7 @@ import SPO2Card from './VitalsCard/SPO2Card';
 import BodyTemperatureCard from './VitalsCard/BodyTemperatureCard';
 import RespiratoryRateCard from './VitalsCard/RespiratoryRateCard';
 import HeartRateVariabilityCard from './VitalsCard/HeartRateVariabilityCard';
-import HospitalDetailsCard from './ HospitalCard';
+import HospitalDetailsCard from './HospitalCard';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { CalendarDays, Download } from 'lucide-react';
