@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import useSOSCases from "@/hooks/useSOSCases";
+import React, { useState } from 'react';
+import useSOSCases from '@/hooks/useSOSCases';
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   Pagination,
   PaginationContent,
@@ -15,72 +15,75 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import SkeletonLoader from "@/pages/common/SkeletonLoader";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
-
-
+} from '@/components/ui/pagination';
+import SkeletonLoader from '@/pages/common/SkeletonLoader';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { useNavigate } from 'react-router-dom';
 
 const SOSCasesTable: React.FC = () => {
   const { data, isLoading, isError } = useSOSCases();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
   const navigate = useNavigate();
 
   if (isLoading) return <SkeletonLoader fullPage />;
   if (isError)
-    return <p className="text-center text-red-500">Error loading SOS cases.</p>;
+    return <p className='text-center text-red-500'>Error loading SOS cases.</p>;
 
   const connectWebSocket = (url: string, message: object) => {
     const socket = new WebSocket(url);
-  
+
     // Handle WebSocket open event
     socket.onopen = () => {
-      console.log("WebSocket connection established.");
+      console.log('WebSocket connection established.');
       socket.send(JSON.stringify(message));
     };
-  
+
     // Handle incoming messages
     socket.onmessage = (event) => {
-      console.log("Message from server:", event.data);
+      console.log('Message from server:', event.data);
     };
-  
+
     // Handle WebSocket error
     socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
+      console.error('WebSocket error:', error);
     };
-  
+
     // Handle WebSocket close
     socket.onclose = () => {
-      console.log("WebSocket connection closed.");
+      console.log('WebSocket connection closed.');
     };
-  
+
     return socket;
   };
-  
 
   const handleJoinCall = (sosCase: any) => {
-
-    const { appId, token, channel , sosCallbackId , userId , latitude , longitude} = sosCase;
+    const {
+      appId,
+      token,
+      channel,
+      sosCallbackId,
+      userId,
+      latitude,
+      longitude,
+    } = sosCase;
     // console.log(token + "sosCasePage");
-    
-    connectWebSocket(
-      "ws://ec2-65-0-97-119.ap-south-1.compute.amazonaws.com:4005/ws/sos-callback",
-      {
-        userType: "user",
-        appId: appId,
-        token: token,
-        channel: channel,
-        sosCallbackId: sosCallbackId,
-      }
-    );
+
+    connectWebSocket('wss://livapp.elitceler.com/ws/sos-callback', {
+      userType: 'user',
+      appId: appId,
+      token: token,
+      channel: channel,
+      sosCallbackId: sosCallbackId,
+    });
     console.log(token + 'token for last session');
-    
+
     // startCall(appId, token, channel , userId);
-    navigate(`/call-page?appId=${appId}&token=${token}&channel=${channel}&userId=${userId}&sosCallbackId=${sosCallbackId}&latitude=${latitude}&longitude=${longitude}`);
+    navigate(
+      `/call-page?appId=${appId}&token=${token}&channel=${channel}&userId=${userId}&sosCallbackId=${sosCallbackId}&latitude=${latitude}&longitude=${longitude}`
+    );
   };
 
   // Filtered SOS cases based on search term
@@ -101,35 +104,35 @@ const SOSCasesTable: React.FC = () => {
   );
 
   return (
-    <Card className="p-6 space-y-4 max-w-5xl mx-auto shadow-[2px_4px_5px_0px_#E9EBFFB2] rounded-[38px] border">
-      <CardTitle className="text-2xl font-medium mb-6 ml-6 text-[#003CBF]">
+    <Card className='p-6 space-y-4 max-w-5xl mx-auto shadow-[2px_4px_5px_0px_#E9EBFFB2] rounded-[38px] border'>
+      <CardTitle className='text-2xl font-medium mb-6 ml-6 text-[#003CBF]'>
         SOS Cases
       </CardTitle>
       <CardContent>
         {/* Search Bar */}
-        <div className="flex items-center justify-end gap-2 mb-4">
-          <div className="relative w-full md:w-72 shadow-[5px_5px_20px_0px_#61ABEB33] rounded-full md:ml-10">
+        <div className='flex items-center justify-end gap-2 mb-4'>
+          <div className='relative w-full md:w-72 shadow-[5px_5px_20px_0px_#61ABEB33] rounded-full md:ml-10'>
             <Input
-              type="text"
-              placeholder="Search by name, email, or mobile number"
+              type='text'
+              placeholder='Search by name, email, or mobile number'
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full border px-4 py-5 rounded-full pr-12 bg-white"
+              className='w-full border px-4 py-5 rounded-full pr-12 bg-white'
             />
           </div>
         </div>
         {/* SOS Cases Table */}
-        <div className="border rounded-md overflow-auto">
-          <Table className="w-full">
-            <TableHeader className="bg-[#E8F1FD]">
+        <div className='border rounded-md overflow-auto'>
+          <Table className='w-full'>
+            <TableHeader className='bg-[#E8F1FD]'>
               <TableRow>
-                <TableHead className="text-left">S.No.</TableHead>
-                <TableHead className="text-left">Name</TableHead>
-                <TableHead className="text-left">Email</TableHead>
-                <TableHead className="text-left">Mobile Number</TableHead>
-                <TableHead className="text-left">Latitude</TableHead>
-                <TableHead className="text-left">Longitude</TableHead>
-                <TableHead className="text-left">Created At</TableHead>
+                <TableHead className='text-left'>S.No.</TableHead>
+                <TableHead className='text-left'>Name</TableHead>
+                <TableHead className='text-left'>Email</TableHead>
+                <TableHead className='text-left'>Mobile Number</TableHead>
+                <TableHead className='text-left'>Latitude</TableHead>
+                <TableHead className='text-left'>Longitude</TableHead>
+                <TableHead className='text-left'>Created At</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -137,7 +140,7 @@ const SOSCasesTable: React.FC = () => {
                 paginatedCases.map((sosCase, index) => (
                   <TableRow
                     key={sosCase.sosCallbackId}
-                    className="hover:bg-gray-50"
+                    className='hover:bg-gray-50'
                   >
                     <TableCell>{startIndex + index + 1}.</TableCell>
                     <TableCell>{sosCase.user.name}</TableCell>
@@ -150,7 +153,7 @@ const SOSCasesTable: React.FC = () => {
                     </TableCell>
                     <TableCell>
                       <button
-                        className="bg-[#E8F1FD] p-4 rounded-md"
+                        className='bg-[#E8F1FD] p-4 rounded-md'
                         onClick={() => handleJoinCall(sosCase)}
                       >
                         Join Call
@@ -160,7 +163,7 @@ const SOSCasesTable: React.FC = () => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center text-gray-500">
+                  <TableCell colSpan={7} className='text-center text-gray-500'>
                     No SOS cases found.
                   </TableCell>
                 </TableRow>
@@ -170,7 +173,7 @@ const SOSCasesTable: React.FC = () => {
         </div>
 
         {/* Pagination */}
-        <div className="mt-4 flex justify-center">
+        <div className='mt-4 flex justify-center'>
           <Pagination>
             {currentPage > 1 ? (
               <PaginationPrevious
@@ -179,7 +182,7 @@ const SOSCasesTable: React.FC = () => {
                 Previous
               </PaginationPrevious>
             ) : (
-              <PaginationPrevious className="text-gray-400 cursor-not-allowed">
+              <PaginationPrevious className='text-gray-400 cursor-not-allowed'>
                 Previous
               </PaginationPrevious>
             )}
@@ -204,7 +207,7 @@ const SOSCasesTable: React.FC = () => {
                 Next
               </PaginationNext>
             ) : (
-              <PaginationNext className="text-gray-400 cursor-not-allowed">
+              <PaginationNext className='text-gray-400 cursor-not-allowed'>
                 Next
               </PaginationNext>
             )}
