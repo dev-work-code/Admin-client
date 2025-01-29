@@ -20,6 +20,7 @@ interface SOSCase {
   createdAt: string;
   updatedAt: string;
   user: User;
+  callCompleted: boolean;
 }
 
 // Fetch SOS cases from the API

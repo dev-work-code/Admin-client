@@ -20,6 +20,9 @@ import SkeletonLoader from '@/pages/common/SkeletonLoader';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
+import { EllipsisVertical } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import api from '@/utils/api';
 
 const SOSCasesTable: React.FC = () => {
   const { data, isLoading, isError } = useSOSCases();
@@ -27,10 +30,29 @@ const SOSCasesTable: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
   const navigate = useNavigate();
+  const [sosDetails, setSosDetails] = useState<Record<string, any>>({});
+  const [loadingSosDetails, setLoadingSosDetails] = useState<string | null>(null);
 
+  // Define handleViewSosDetails before any conditional returns
+  const handleViewSosDetails = async (soscallbackId: string) => {
+    try {
+      setLoadingSosDetails(soscallbackId);
+      const response = await api.get(`/admin/get-complete-call-details?sosCallbackId=${soscallbackId}`);
+      console.log('API Response:', response.data);
+      setSosDetails((prev) => ({
+        ...prev,
+        [soscallbackId]: response.data
+      }));
+    } catch (error) {
+      console.error('Error fetching SOS details:', error);
+    } finally {
+      setLoadingSosDetails(null);
+    }
+  };
+
+  // Then handle loading and error states
   if (isLoading) return <SkeletonLoader fullPage />;
-  if (isError)
-    return <p className='text-center text-red-500'>Error loading SOS cases.</p>;
+  if (isError) return <p className='text-center text-red-500'>Error loading SOS cases.</p>;
 
   const connectWebSocket = (url: string, message: object) => {
     const socket = new WebSocket(url);
@@ -103,6 +125,8 @@ const SOSCasesTable: React.FC = () => {
     startIndex + itemsPerPage
   );
 
+
+
   return (
     <Card className='p-6 space-y-4 max-w-5xl mx-auto shadow-[2px_4px_5px_0px_#E9EBFFB2] rounded-[38px] border'>
       <CardTitle className='text-2xl font-medium mb-6 ml-6 text-[#003CBF]'>
@@ -152,13 +176,77 @@ const SOSCasesTable: React.FC = () => {
                       {new Date(sosCase.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      <button
-                        className='bg-[#E8F1FD] p-4 rounded-md'
-                        onClick={() => handleJoinCall(sosCase)}
-                      >
-                        Join Call
-                      </button>
+                      {sosCase.callCompleted === false ?
+                        <button
+                          className='bg-[#E8F1FD] p-4 rounded-md'
+                          onClick={() => handleJoinCall(sosCase)}
+                        >
+                          Join Call
+                        </button>
+                        :
+                        <button
+                          className='bg-[#E8F1FD] p-4 rounded-md cursor-not-allowed'
+                          disabled
+                        >
+                          Call Completed
+                        </button>}
                     </TableCell>
+
+                    <TableCell>
+                      <DropdownMenu 
+                        onOpenChange={(open) => {
+                          if (open) {
+                            handleViewSosDetails(sosCase.sosCallbackId);
+                          }
+                        }}
+                      >
+                        <DropdownMenuTrigger>
+                          <button 
+                            type="button"
+                            className="p-2 hover:bg-gray-100 rounded-full"
+                          >
+                            <EllipsisVertical className="w-5 h-5" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent 
+                          side="bottom" 
+                          align="center" 
+                          className="bg-white p-2 rounded-md shadow-md min-w-[200px] z-50"
+                        >
+                          {loadingSosDetails === sosCase.sosCallbackId ? (
+                            <DropdownMenuItem disabled>
+                              Loading...
+                            </DropdownMenuItem>
+                          ) : sosDetails[sosCase.sosCallbackId] ? (
+                            <>
+                              <DropdownMenuItem className="flex justify-between py-2 px-4 hover:bg-gray-100">
+                                Driver Status
+                                <span className="text-red-500">
+                                  {sosDetails[sosCase.sosCallbackId].driver === null ? "Not Assigned" : "Assigned"}
+                                </span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="flex justify-between py-2 px-4 hover:bg-gray-100">
+                                Doctor Status
+                                <span className="text-red-500">
+                                  {sosDetails[sosCase.sosCallbackId].doctor === null ? "Not Assigned" : "Assigned"}
+                                </span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="flex justify-between py-2 px-4 hover:bg-gray-100">
+                                Hospital Status
+                                <span className="text-red-500">
+                                  {sosDetails[sosCase.sosCallbackId].hospital === null ? "Not Assigned" : "Assigned"}
+                                </span>
+                              </DropdownMenuItem>
+                            </>
+                          ) : (
+                            <DropdownMenuItem disabled>
+                              No data available
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+
                   </TableRow>
                 ))
               ) : (

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Video, Mic } from 'lucide-react';
-import { useDoctors } from '@/hooks/useDoctors'; // Assuming the custom hook is in the "hooks" folder
-import api from '@/utils/api.ts'; // Custom axios instance
+import { useDoctors } from '@/hooks/useDoctors';
+import api from '@/utils/api';
 import { useDrivers } from '@/hooks/useDrivers';
 import {
   LocalUser,
@@ -17,14 +17,14 @@ import {
 
 const CallPage = () => {
   const [searchParams] = useSearchParams();
-  // const navigate = useNavigate();
-  // const [isMuted, setIsMuted] = useState(false);
-  // const [isVideoHidden, setIsVideoHidden] = useState(false);
   const [selectedDoctor] = useState<string | null>(null);
   const { data: doctors, isLoading } = useDoctors();
   const { data: drivers } = useDrivers();
   const [calling, setCalling] = useState(false);
   const isConnected = useIsConnected();
+  const [hospitals, setHospitals] = useState<Array<{ hospitalId: string; hospitalName: string }>>([]);
+  const [loadingHospitals, setLoadingHospitals] = useState(false);
+  const [selectedHospital, setSelectedHospital] = useState<string | null>(null);
 
   const appId = searchParams.get('appId');
   const token = searchParams.get('token');
@@ -133,13 +133,53 @@ const CallPage = () => {
     }
   };
 
+  const fetchNearbyHospitals = async () => {
+    const sosCallbackId = searchParams.get('sosCallbackId');
+    
+    if (!sosCallbackId) {
+      alert('SOS Callback ID is missing.');
+      return;
+    }
+
+    try {
+      setLoadingHospitals(true);
+      const response = await api.get(`/admin/get-nearby-hospitals?sosCallbackId=${sosCallbackId}`);
+      setHospitals(response.data.nearbyHospitals);
+    } catch (error) {
+      console.error('Failed to fetch hospitals:', error);
+      alert('Failed to fetch nearby hospitals.');
+    } finally {
+      setLoadingHospitals(false);
+    }
+  };
+
+  const handleHospitalSelect = async (hospitalId: string) => {
+    const sosCallbackId = searchParams.get('sosCallbackId');
+
+    if (!sosCallbackId) {
+      alert('SOS Callback ID is missing.');
+      return;
+    }
+
+    try {
+      await api.post('/admin/assign-hospital-soscase', {
+        sosCallbackId,
+        hospitalId,
+      });
+      alert('Hospital assigned successfully!');
+    } catch (error) {
+      console.error('Failed to assign hospital:', error);
+      alert('Failed to assign hospital.');
+    }
+  };
+
   return (
     <div>
       <>
         <div className='pt-[100px]'>
           {isConnected ? (
-            <div className='flex gap-5 p-10 flex-1'>
-              <div className='w-72 h-[216px] border border-gray-600 box-border'>
+            <div className='grid grid-cols-3 gap-6 p-8 max-w-7xl mx-auto'>
+              <div className='relative aspect-video rounded-xl overflow-hidden border border-gray-700 shadow-lg bg-gray-800'>
                 <LocalUser
                   audioTrack={localMicrophoneTrack}
                   cameraOn={cameraOn}
@@ -147,23 +187,23 @@ const CallPage = () => {
                   videoTrack={localCameraTrack}
                   cover='https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg'
                 >
-                  <samp className='absolute bottom-0 z-2 inline-flex items-center gap-1 px-1 text-sm text-white bg-black'>
-                    You
-                  </samp>
+                  <div className='absolute bottom-3 left-3 z-10 inline-flex items-center gap-2 px-3 py-1.5 text-sm text-white bg-black/60 backdrop-blur-sm rounded-lg'>
+                    <span>You</span>
+                  </div>
                 </LocalUser>
               </div>
               {remoteUsers.map((user) => (
                 <div
-                  className='w-72 h-[216px] border border-gray-600 box-border'
+                  className='relative aspect-video rounded-xl overflow-hidden border border-gray-700 shadow-lg bg-gray-800'
                   key={user.uid}
                 >
                   <RemoteUser
                     cover='https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg'
                     user={user}
                   >
-                    <samp className='absolute bottom-0 z-2 inline-flex items-center gap-1 px-1 text-sm text-white bg-black'>
-                      {user.uid}
-                    </samp>
+                    <div className='absolute bottom-3 left-3 z-10 inline-flex items-center gap-2 px-3 py-1.5 text-sm text-white bg-black/60 backdrop-blur-sm rounded-lg'>
+                      <span>{user.uid}</span>
+                    </div>
                   </RemoteUser>
                 </div>
               ))}
@@ -221,6 +261,26 @@ const CallPage = () => {
                     </option>
                   )
                 )}
+            </select>
+
+            <select
+              className='w-full bg-gray-700 text-white p-2.5 rounded-lg shadow-lg outline-none border border-gray-600 hover:border-gray-500 transition-colors'
+              onChange={(e) => handleHospitalSelect(e.target.value)}
+              value={selectedHospital || ''}
+              onClick={() => {
+                if (!hospitals?.length) {
+                  fetchNearbyHospitals();
+                }
+              }}
+            >
+              <option value='' disabled>
+                {loadingHospitals ? 'Loading hospitals...' : 'Nearby hospitals'}
+              </option>
+              {Array.isArray(hospitals) && hospitals.map((hospital) => (
+                <option key={hospital.hospitalId} value={hospital.hospitalId}>
+                  {hospital.hospitalName}
+                </option>
+              ))}
             </select>
           </div>
         </div>
