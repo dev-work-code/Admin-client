@@ -22,8 +22,11 @@ const CallPage = () => {
   const { data: drivers } = useDrivers();
   const [calling, setCalling] = useState(false);
   const isConnected = useIsConnected();
-  const [hospitals, setHospitals] = useState<Array<{ hospitalId: string; hospitalName: string }>>([]);
+  const [hospitals, setHospitals] = useState<
+    Array<{ hospitalId: string; hospitalName: string }>
+  >([]);
   const [loadingHospitals, setLoadingHospitals] = useState(false);
+  //@ts-ignore
   const [selectedHospital, setSelectedHospital] = useState<string | null>(null);
 
   const appId = searchParams.get('appId');
@@ -135,7 +138,7 @@ const CallPage = () => {
 
   const fetchNearbyHospitals = async () => {
     const sosCallbackId = searchParams.get('sosCallbackId');
-    
+
     if (!sosCallbackId) {
       alert('SOS Callback ID is missing.');
       return;
@@ -143,7 +146,9 @@ const CallPage = () => {
 
     try {
       setLoadingHospitals(true);
-      const response = await api.get(`/admin/get-nearby-hospitals?sosCallbackId=${sosCallbackId}`);
+      const response = await api.get(
+        `/admin/get-nearby-hospitals?sosCallbackId=${sosCallbackId}`
+      );
       setHospitals(response.data.nearbyHospitals);
     } catch (error) {
       console.error('Failed to fetch hospitals:', error);
@@ -276,11 +281,12 @@ const CallPage = () => {
               <option value='' disabled>
                 {loadingHospitals ? 'Loading hospitals...' : 'Nearby hospitals'}
               </option>
-              {Array.isArray(hospitals) && hospitals.map((hospital) => (
-                <option key={hospital.hospitalId} value={hospital.hospitalId}>
-                  {hospital.hospitalName}
-                </option>
-              ))}
+              {Array.isArray(hospitals) &&
+                hospitals.map((hospital) => (
+                  <option key={hospital.hospitalId} value={hospital.hospitalId}>
+                    {hospital.hospitalName}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
