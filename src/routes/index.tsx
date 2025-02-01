@@ -45,6 +45,7 @@ const NotFound = lazy(() => import('@/pages/notFound'));
 const Profile = lazy(() => import('@/pages/Profile'));
 const Roles = lazy(() => import('@/pages/Roles'));
 const SOSCases = lazy(() => import('@/pages/SosCases'));
+const SosCallDetails = lazy(() => import('@/pages/SosCallDetails'));
 const CallPage = lazy(() => import('@/pages/CallPage'));
 
 export default function AppRouter() {
@@ -70,6 +71,10 @@ export default function AppRouter() {
         {
           path: '/sos-cases',
           element: <ProtectedRoute element={<SOSCases />} />,
+        },
+        {
+          path: '/sos-details',
+          element: <ProtectedRoute element={<SosCallDetails />} />,
         },
         {
           path: '/call-page',

@@ -22,11 +22,16 @@ const CallPage = () => {
   const { data: drivers } = useDrivers();
   const [calling, setCalling] = useState(false);
   const isConnected = useIsConnected();
+<<<<<<< HEAD
   const [hospitals, setHospitals] = useState<
     Array<{ hospitalId: string; hospitalName: string }>
   >([]);
   const [loadingHospitals, setLoadingHospitals] = useState(false);
   //@ts-ignore
+=======
+  const [hospitals, setHospitals] = useState<Array<{ hospitalId: string; hospitalName: string }>>([]);
+  const [loadingHospitals, setLoadingHospitals] = useState(false);
+>>>>>>> db52837 (new change)
   const [selectedHospital, setSelectedHospital] = useState<string | null>(null);
 
   const appId = searchParams.get('appId');
@@ -138,7 +143,11 @@ const CallPage = () => {
 
   const fetchNearbyHospitals = async () => {
     const sosCallbackId = searchParams.get('sosCallbackId');
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> db52837 (new change)
     if (!sosCallbackId) {
       alert('SOS Callback ID is missing.');
       return;
@@ -146,9 +155,13 @@ const CallPage = () => {
 
     try {
       setLoadingHospitals(true);
+<<<<<<< HEAD
       const response = await api.get(
         `/admin/get-nearby-hospitals?sosCallbackId=${sosCallbackId}`
       );
+=======
+      const response = await api.get(`/admin/get-nearby-hospitals?sosCallbackId=${sosCallbackId}`);
+>>>>>>> db52837 (new change)
       setHospitals(response.data.nearbyHospitals);
     } catch (error) {
       console.error('Failed to fetch hospitals:', error);
@@ -178,6 +191,27 @@ const CallPage = () => {
     }
   };
 
+<<<<<<< HEAD
+=======
+  const handleEndCall = async () => {
+    const sosCallbackId = searchParams.get('sosCallbackId');
+
+    if (!sosCallbackId) {
+      alert('SOS Callback ID is missing.');
+      return;
+    }
+
+    try {
+      await api.put(`/admin/call-completed?sosCallbackId=${sosCallbackId}`);
+      setCalling(false);
+      alert('Call ended successfully!');
+    } catch (error) {
+      console.error('Failed to end call:', error);
+      alert('Failed to end call.');
+    }
+  };
+
+>>>>>>> db52837 (new change)
   return (
     <div>
       <>
@@ -281,43 +315,48 @@ const CallPage = () => {
               <option value='' disabled>
                 {loadingHospitals ? 'Loading hospitals...' : 'Nearby hospitals'}
               </option>
+<<<<<<< HEAD
               {Array.isArray(hospitals) &&
                 hospitals.map((hospital) => (
                   <option key={hospital.hospitalId} value={hospital.hospitalId}>
                     {hospital.hospitalName}
                   </option>
                 ))}
+=======
+              {Array.isArray(hospitals) && hospitals.map((hospital) => (
+                <option key={hospital.hospitalId} value={hospital.hospitalId}>
+                  {hospital.hospitalName}
+                </option>
+              ))}
+>>>>>>> db52837 (new change)
             </select>
           </div>
         </div>
         {isConnected && (
-          <div className='absolute bottom-0 w-full flex items-center justify-center gap-3 py-3 px-6 bg-[#21242c] text-gray-300'>
-            <div className='flex flex-1 h-full items-center gap-3 py-3 px-6'>
+          <div className='fixed bottom-0 left-0 right-0 flex items-center justify-center gap-6 py-6 px-8 bg-[#21242c]/90 backdrop-blur-sm border-t border-white/10'>
+            <div className='flex items-center gap-4'>
               <button
-                className='inline-flex flex-col items-center bg-transparent border border-white/10 rounded px-2 py-1 cursor-pointer'
+                className='flex items-center justify-center w-12 h-12 bg-white hover:bg-gray-600/50 border border-white/10 rounded-full transition-all duration-200'
                 onClick={() => setMic((a) => !a)}
               >
-                <i className={`text-[1.2rem] ${!micOn ? 'opacity-20' : ''}`}>
-                  <Mic />
-                </i>
+                <Mic className={`w-5 h-5 ${!micOn ? 'opacity-40' : ''}`} />
               </button>
               <button
-                className='inline-flex flex-col items-center bg-transparent border border-white/10 rounded px-2 py-1 cursor-pointer'
+                className='flex items-center justify-center w-12 h-12 bg-white hover:bg-gray-600/50 border border-white/10 rounded-full transition-all duration-200'
                 onClick={() => setCamera((a) => !a)}
               >
-                <i className={`text-[1.2rem] ${!cameraOn ? 'opacity-20' : ''}`}>
-                  <Video />
-                </i>
+                <Video className={`w-5 h-5 ${!cameraOn ? 'opacity-40' : ''}`} />
               </button>
             </div>
-            <button
-              className={`rounded-lg px-16 py-2 text-white ${
-                calling ? 'bg-red-600' : 'bg-green-600'
-              }`}
-              onClick={() => setCalling((a) => !a)}
-            >
-              {calling ? '📞' : '📱'}
-            </button>
+            
+            {calling && (
+              <button
+                className='flex items-center justify-center px-8 py-3 bg-red-600 hover:bg-red-700 rounded-full text-white font-medium transition-all duration-200'
+                onClick={handleEndCall}
+              >
+                End Call
+              </button>
+            )}
           </div>
         )}
       </>
